@@ -1,0 +1,133 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<ClassLibrary.Models.Post>
+@using ReflectionIT.Mvc.Paging
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, ReflectionIT.Mvc.Paging
+}
+
+<style>
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+</style>
+
+<link rel="stylesheet" href="~/css/post-delete-info.css" />
+
+<div class="not-layout">
+
+    <h4 class="text-center title is-4"> Postovi </h4>
+    @foreach (var x in Model)
+    {
+        <div class="box" style="height: auto">
+            <article class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="@x.ImageLocation" alt="Post-image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p class="">
+                            <strong><a asp-area="" asp-controller="Post" asp-action="Pregled" asp-route-postId="@x.Id" data-toggle="tooltip" data-placement="top" title="Pregledaj">@x.Naslov</a></strong>
+                            <small><span>&#x40</span>@x.Autor.UserName</small>
+                            <small> @x.GetDatumAsText() </small>
+                            <br>
+                        </p>
+                        <div class="short-text" id="bog">
+                            @x.Sadrzaj
+                        </div>
+                    </div>
+                    <nav class="level is-mobile">
+                        <div class="level-left">
+                            <a class="level-item" aria-label="retweet" asp-controller="Post" asp-action="EditPost" asp-route-id="@x.Id">
+                                <span class="icon is-small">
+                                    <i data-toggle="tooltip" data-placement="top" title="Edituj post" class="far fa-edit" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                            <a class="level-item post-delete" aria-label="like">
+                                <span class="icon is-small">
+                                    <i data-toggle="tooltip" data-placement="top" title="Obriši post" class="far fa-trash-alt" aria-hidden="true" style="color: darkred"></i>
+                                </span>
+                            </a>
+                            <article class="message is-danger is-light poruka">
+                                <div class="message-header">
+                                    Info
+                                    <button class="delete"></button>
+                                </div>
+                                <div class="message-body">
+                                    <p> Jeste li sigurni da želite obrisati post? </p> <br />
+                                    <a asp-controller="Post" asp-action="ObrisiPost" asp-route-id="@x.Id" class="button is-danger is-outlined delete-button"> Jesam, obriši! </a>
+                                </div>
+                            </article>
+                        </div>
+                    </nav>
+                </div>
+            </article>
+        </div>
+    }
+
+
+    <nav aria-label="Post Paging">
+        <vc:pager paging-list="@Model" />
+    </nav>
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $('.short-text').each(function (f) {
+            var newstr = $(this).text().substring(0, 470);
+            $(this).text(newstr + "..");
+        });
+    });
+</script>
+
+<script>
+    var n = document.getElementsByClassName("short-text");
+    for (let i = 0; i < n.length; i++) {
+        n[i].innerHTML = n[i].textContent.replace("\"", "");
+    }
+
+    var posts = document.getElementsByClassName("post-delete");
+    var xes = document.getElementsByClassName("delete");
+
+    for (let i = 0; i < posts.length; i++)
+    {
+        posts[i].onclick = function () {
+            var sibling = posts[i].nextElementSibling;
+            if (sibling.style.visibility == "visible") {
+                sibling.style.visibility = "hidden";
+            } else {
+                sibling.style.visibility = "visible";
+            }
+        }
+    }
+
+    for (let i = 0; i < xes.length; i++)
+    {
+        xes[i].onclick = function() {
+            var parent = xes[i].parentElement.parentElement;
+            if (parent.style.visibility == "visible") {
+                parent.style.visibility = "hidden";
+            } else {
+                parent.style.visibility = "visible";
+            }
+        }
+    }
+
+</script>

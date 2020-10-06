@@ -1,0 +1,80 @@
+﻿
+.spacing
+{
+    margin-top: 100px;
+}
+
+.forma {
+    padding-top: 25px;
+    padding: 50px;
+    
+    width: 500px;
+}
+
+.register-forma{
+    width: 70%;
+    margin:auto;
+}
+
+.label-input{
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 20px;
+    grid-template-columns: 1fr 2fr;
+    grid-row-gap: 0px;
+    align-items: center;
+}
+
+.label-input:last-child {
+    grid-column: 1/span 2;
+}
+
+.label-input>input{
+    width: 100%;
+}
+
+.label-input:first-child{
+    color: darkslategray;
+}
+
+h4{
+    text-align: center;
+}
+
+select, option{
+    width: 100% !important;
+}
+
+.submit {
+    text-align: center;
+    margin: auto;
+}
+
+.info-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.info-card>img{
+    margin:auto;
+}
+
+.info-card > div {
+    margin-left: 15px;
+}
+
+.info-card > div > a{
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.error {
+    width: 150%;
+    color: red;
+    grid-column: 2/span 4;
+    margin-top: 14px;
+}

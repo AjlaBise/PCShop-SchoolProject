@@ -1,0 +1,12 @@
+﻿.delete-button {
+    display: flex; 
+    margin: auto;
+}
+
+.poruka {
+    position: absolute; 
+    margin-top: -90px;
+    margin-left: 42px;
+    visibility: hidden;
+}
+

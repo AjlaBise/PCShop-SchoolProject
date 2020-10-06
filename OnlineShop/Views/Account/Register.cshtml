@@ -1,0 +1,297 @@
+﻿@using ClassLibrary.Models
+@model ClassLibrary.Models.AppUser
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+<h4 class="title is-4">Registruj se</h4>
+<form asp-action="AddUser" class="register-forma" id="reg">
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" asp-for="Ime">Ime i prezime</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <p class="control is-expanded has-icons-left">
+                    <input asp-for="Ime" class="input" type="text" placeholder="Vaše ime">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control is-expanded">
+                    <input asp-for="Prezime" class="input" type="text" placeholder="Vaše prezime">
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label"></div>
+        <div class="field-body">
+            <div class="field is-expanded">
+                <div class="field has-addons">
+                    <p class="control">
+                        <a class="button is-static">
+                            +387
+                        </a>
+                    </p>
+                    <p class="control is-expanded">
+                        <input asp-for="PhoneNumber" class="input" placeholder="Broj telefona">
+                    </p>
+                </div>
+                <p class="help">*Mora biti u formatu 06x/xxx-xxx</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">Spol</label>
+        </div>
+        <div class="field-body">
+            <div class="field is-narrow">
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select asp-for="Spol">
+                            <option value="M"> Muško </option>
+                            <option value="Z"> Žensko </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label asp-for="SjedisteId" class="label">Država</label>
+        </div>
+        <div class="field-body">
+            <div class="field is-narrow">
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select asp-for="SjedisteId" class="form-control">
+                            @foreach (var x in (List<Drzava>)ViewData["drzave"])
+                            {
+                                <option value="@x.Id"> @x.Naziv </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label asp-for="Email" class="label">E-mail</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input id="mail" onkeyup="checkEmail()" class="input" asp-for="Email" type="email" placeholder="username@gmail.com">
+                </div>
+            </div>
+            <span id="spnMsgMail"></span>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label asp-for="UserName" class="label text-success">Korisničko ime</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input id="uname" onkeyup="checkUserName()" asp-for="UserName" class="input" type="text" placeholder="Unesite username">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </p>
+                <span id="spnMsg"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label asp-for="PasswordHash" class="label text-success">Lozinka</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input asp-for="PasswordHash" class="input" type="password" placeholder="Unesite lozinku">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <input asp-for="Pretplacen" type="checkbox" checked="checked">
+                Želim da primam obavijesti o proizvodima i ponudama!
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="field is-horizontal">
+        <div class="field-label">
+             Left empty for spacing 
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input type="submit" value="Registracija" class="button is-primary" id="btnRegister" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+
+    $(function () {
+        $("#reg").validate({
+            rules: {
+                Ime: {
+                    required: true
+                },
+                Prezime: {
+                    required: true
+                },
+                Spol: {
+                    required: true
+                },
+                UserName: {
+                    required: true
+                },
+                Email: {
+                    email: true,
+                    required: true
+                },
+                PasswordHash: {
+                    required: true,
+                    minlength: 8,
+                    passwordRegex: true
+                },
+                PhoneNumber: {
+                    required: true,
+                    phoneRegex: true
+                }
+            },
+            messages: {
+                Ime: "Molimo unesite vaše ime.",
+                Prezime: "Molimo unesite vaše prezime.",
+                Spol: "Molimo odaberite vaš spol.",
+                Username: "Polje je obavezno.",
+                PasswordHash: {
+                    required: "Polje je obavezno.",
+                    minlength: "Lozinka mora sadržavati najmanje 8 karaktera.",
+                    passwordRegex: "Lozinka mora sadržavati mala i velika slova, brojeve i bar jedan specijalni znak."
+                },
+                Email: "Molimo unesite validnu e-mail adresu.",
+                PhoneNumber: {
+                    required: "Polje je obavezno.",
+                    phoneRegex: "Broj telefona mora biti u formatu 06x/xxx-xxx"
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            },
+            highlight: function (element, errorClass, validClass) {
+                return false;
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                return false;
+            }
+        });
+
+        jQuery.validator.addMethod("passwordRegex", function (value, element) {
+            return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()%&{}/]).{8,}$/g.test(value);
+        }, "Lozinka mora sadržavati mala i velika slova, brojeve i bar jedan specijalni znak.");
+
+        jQuery.validator.addMethod("phoneRegex", function (value, element) {
+            return this.optional(element) || /^(0{0,1}[63])[123456]\/\d{3}\-\d{3}$/g.test(value);
+        }, "Broj telefona mora biti u formatu 06x/xxx-xxx ili 03x/xxx-xxx.");
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    function checkUserName() {
+        var x = $("#uname").val().toString();
+        $.ajax({
+            type: "GET",
+            async: true,
+            url: '/Account/CheckUserName',
+            data: { "Username": x },
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response != "0") {
+                    $("#spnMsg").html('Korisničko ime već postoji.');
+                    $("#spnMsg").removeClass("text text-success").addClass("text text-danger");
+                    $("#btnRegister").prop('disabled', true);
+                }
+                else if (response == "2") {
+                    $("#spnMsgMail").html('');
+                    $("#btnRegister").prop('disabled', true);
+                }
+                else {
+                    $("#spnMsg").html('Ovo korisničko ime je dostupno.');
+                    $("#spnMsg").removeClass("text text-danger").addClass("text text-success");
+                    $("#btnRegister").prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    function checkEmail() {
+        var x = $("#mail").val().toString();
+        $.ajax({
+            type: "GET",
+            async: true,
+            url: '/Account/CheckEmail',
+            data: { "Email": x },
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response != 0) {
+                    $("#spnMsgMail").html('Korisnik sa ovim nalogom već postoji.');
+                    $("#spnMsgMail").removeClass("text text-success").addClass("text text-danger");
+                    $("#btnRegister").prop('disabled', true);
+                }
+                else if (response == 2) {
+                    $("#spnMsgMail").html('');
+                    $("#btnRegister").prop('disabled', true);
+                }
+                else {
+                    $("#spnMsgMail").html('');
+                    $("#spnMsgMail").removeClass("text text-danger").addClass("text text-success");
+                    $("#btnRegister").prop('disabled', false);
+                }
+            }
+        });
+    }
+</script>

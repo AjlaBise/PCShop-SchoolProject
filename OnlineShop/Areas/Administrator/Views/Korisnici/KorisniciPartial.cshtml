@@ -1,0 +1,240 @@
+﻿@model OnlineShop.ViewModels.KorisnikIndexVM
+
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Org.BouncyCastle.Bcpg
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Korisničko ime</th>
+            <th>E-mail</th>
+            <th>Pretplaćen</th>
+            <th>Kontakt tel.</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Datum registracije</th>
+            <th>Posljednji login</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.korisnici)
+        {
+            <tr>
+                <td>
+                    <div class="dropdown" name="user-@x.Id">
+                        <div class="dropdown-trigger">
+                            <span style="cursor: pointer" aria-haspopup="true" aria-controls="dropdown-menu-@x.Id" name="user-@x.Id">
+                                <span style="color: darkcyan" data-toggle="tooltip" data-placement="top" title="Klik za više operacija!">
+                                    <b> @x.UserName </b>
+                                    @if (x.Id == 1)
+                                    {
+                                        <i class="fas fa-user-shield" style="color: goldenrod"></i>
+                                    }
+                                </span>
+                            </span>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu-@x.Id" role="menu">
+                            <div class="dropdown-content">
+                                <button class="button is-white" name="confirm-@x.Id" value="@x.Id">
+                                    Pošalji konfirmacijski kod
+                                </button>
+                                <button class="button is-white" name="mailto-@x.Id" value="@x.UserName" style="width: 100%">
+                                    Pošalji poruku (e-mail)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td width="250px">
+                    @x.Email
+                    @if (x.EmailConfirmed)
+                    {
+                        <span data-toggle="tooltip" data-placement="top" title="Korisnik je potvrdio e-mail adresu."><i class="fas fa-check-circle" style="color:green"></i></span>
+                    }
+                    else
+                    {
+                        <span data-toggle="tooltip" data-placement="top" title="Korisnik nije potvrdio svoju e-mail adresu."><i class="fas fa-times-circle" style="color:red"></i></span>
+                    }
+                </td>
+                @if (x.Pretplacen)
+                {
+                    <td> DA </td>
+                }
+                else
+                {
+                    <td> NE </td>
+                }
+                <td width="150px">
+                    <a href="tel:@x.PhoneNumber">
+                        @x.PhoneNumber
+                        @if (x.PhoneNumberConfirmed)
+                        {
+                            <span data-toggle="tooltip" data-placement="top" title="Korisnik je potvrdio broj telefona."><i class="fas fa-check-circle" style="color:green"></i></span>
+                        }
+                        else
+                        {
+                            <span data-toggle="tooltip" data-placement="top" title="Korisnik nije potvrdio broj telefona."><i class="fas fa-times-circle" style="color:red"></i></span>
+                        }
+                    </a>
+                </td>
+                <td> @x.Ime </td>
+                <td> @x.Prezime </td>
+                <td> @x.DatumRegistracije.ToString("dd/MM/yyyy") </td>
+                @if (x.PosljednjiLoginDate.HasValue)
+                {
+                    <td width="150px">
+                        @x.PosljednjiLoginDate.Value.ToString("dd/MM/yyyy H:mm")
+                    </td>
+                }
+                else
+                {
+                    <td width="150px" style="color:darkred"> Nije prijavljen </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Korisnici Paging">
+    <vc:pager paging-list="@Model.korisnici" />
+</nav>
+
+<br />
+
+<script>
+
+    $(function () {
+        
+        $('[data-toggle="tooltip"]').tooltip();
+
+        var pageLinks = document.getElementsByClassName("page-link");
+
+        for (let i = 0; i < pageLinks.length; i++) {
+            $(pageLinks[i]).removeAttr("href");
+            if ($(pageLinks[i]).attr("aria-label") == "Next") {
+                pageLinks[i].onclick = function () {
+                    let element = document.getElementsByClassName("active")[0];
+                    let nextPage = $(element).find("a").html();
+
+                    $.post("/Administrator/Korisnici/GetUsersPartial",
+                        { "page": eval(nextPage.toString() + " + 1") },
+                                function (result) {
+                                    $("#users-partial").empty();
+                                    $("#users-partial").html(result);
+                                });
+                }
+            }
+            else if ($(pageLinks[i]).attr("aria-label") == "Previous") {
+                pageLinks[i].onclick = function () {
+                    let element = document.getElementsByClassName("active")[0];
+                    let nextPage = $(element).find("a").html();
+
+                    $.post("/Administrator/Korisnici/GetUsersPartial",
+                        { "page": eval(nextPage.toString() + " - 1") },
+                        function (result) {
+                            $("#users-partial").empty();
+                            $("#users-partial").html(result);
+                        });
+                }
+            }
+            else {
+                pageLinks[i].onclick = function () {
+                    var Page = $(pageLinks[i]).html();
+                    $.post("/Administrator/Korisnici/GetUsersPartial",
+                        {"page": Page },
+                        function (result) {
+                            $("#users-partial").empty();
+                            $("#users-partial").html(result);
+                        });
+                };
+            }
+        };
+    });
+
+    $("#btn1").on("click", function () {
+        $("#dropdown1").toggleClass("is-active");
+    });
+
+    var buttons = $("span[name^='user-'");
+    var dropdowns = $("div[name^='user-'");
+
+    for (let i = 0; i < buttons.length; i++) {
+        $(buttons[i]).on("click", function () {
+            $(dropdowns[i]).toggleClass("is-active");
+        });
+    }
+
+
+    $(document).click(function (event) {
+        $target = $(event.target);
+        for (let i = 0; i < buttons.length; i++) {
+            if (!$target.closest($(dropdowns[i])).length &&
+                $(dropdowns[i]).is(":visible")) {
+                $(dropdowns[i]).removeClass("is-active");
+            }
+        }
+    });
+
+    var confirms = $("button[name^='confirm-'");
+
+    for (let i = 0; i < confirms.length; i++) {
+        $(confirms[i]).on("click", function () {
+            $(this).addClass("is-loading");
+            var id = $(confirms[i]).val();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Korisnici/PosaljiToken',
+                data: { "UserID": id },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response != "error") {
+                        $("#email-confirm").text("Uspješno poslan mail korisniku '" + response + "'");
+                        $("#email-confirm").css("color", "darkgreen");
+                    } else {
+                        $("#email-confirm").text("Dogodila se greška, molimo pokušajte ponovo.");
+                        $("#email-confirm").css("color", "red");
+                    }
+                    $(confirms[i]).removeClass("is-loading");
+                }
+            });
+        });
+    }
+
+    var mailButtons = $("button[name^='mailto-'");
+    for (let i = 0; i < mailButtons.length; i++) {
+        $(mailButtons[i]).on("click",
+            function () {
+                var id = $(confirms[i]).val();
+                var username = $(mailButtons[i]).val();
+                $.ajax({
+                    type: "GET",
+                    async: true,
+                    url: '/Administrator/Korisnici/EmailPartial',
+                    data: { "id": id, "user": username },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#dialog").html(response);
+                    }
+                });
+            });
+    }
+
+
+</script>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>

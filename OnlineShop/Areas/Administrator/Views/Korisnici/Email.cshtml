@@ -1,0 +1,86 @@
+﻿@model Tuple<string, string>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<style>
+    .ql-color .ql-picker-options [data-value=custom-color] {
+        background: none !important;
+        width: 100% !important;
+        height: 20px !important;
+        text-align: center;
+    }
+
+        .ql-color .ql-picker-options [data-value=custom-color]:before {
+            content: 'Custom Color';
+        }
+
+        .ql-color .ql-picker-options [data-value=custom-color]:hover {
+            border-color: transparent !important;
+        }
+</style>
+
+
+<hr/>
+<h4 class="text title is-4" style="text-align: center"> Slanje e-maila korisniku: @Model.Item2 </h4>
+<div style="height: 500px" id="editor">
+
+</div>
+
+<br />
+<br />
+
+<button id="send-mail" class="button is-primary"> Pošalji e-mail </button>
+
+
+<br />
+<br />
+<br />
+
+
+
+<script>
+
+    var tools = [
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['header', 'size', 'bold', 'italic', 'underline', 'strike'],
+        [{ 'color': ["#000000", "#e60000", "#ff9900", "#ffff00", "#008a00", "#0066cc", "#9933ff", "#ffffff", "#facccc", "#ffebcc", "#ffffcc", "#cce8cc", "#cce0f5", "#ebd6ff", "#bbbbbb", "#f06666", "#ffc266", "#ffff66", "#66b966", "#66a3e0", "#c285ff", "#888888", "#a10000", "#b26b00", "#b2b200", "#006100", "#0047b2", "#6b24b2", "#444444", "#5c0000", "#663d00", "#666600", "#003700", "#002966", "#3d1466", 'custom-color'] }],
+        ['link', 'image'],
+        [{'align' : ['center', 'right', 'justify']}]
+    ];
+
+    var quill = new Quill("#editor", { theme: 'snow', modules: { toolbar: tools } });
+
+    quill.getModule('toolbar').addHandler('color', (value) => {
+        if (value == 'custom-color') {
+            value = prompt('Enter Hex/RGB/RGBA');
+        }
+
+        quill.format('color', value);
+    });
+
+    quill.getHTML = () => {
+        return quill.root.innerHTML;
+    }
+
+
+    $("#send-mail").on("click",
+        function () {
+            $(this).addClass("is-loading");
+            var id =@Model.Item1;
+            var poruka = quill.getHTML();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Korisnici/PosaljiMail',
+                data: { "UserID": id, "text": poruka },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#success").html("Mail uspješno poslan");
+                    $("#send-mail").removeClass("is-loading");
+                }
+            });
+        });
+
+</script>

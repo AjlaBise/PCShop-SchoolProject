@@ -1,0 +1,86 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@model ClassLibrary.Models.Post
+@{
+    ViewData["Title"] = "DodajPost";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.tiny.cloud/1/hp7m5by19tqm6brtnalii71vu84aoxh4xf9hg03q3vx74yev/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<div class="not-layout">
+    <h4 class="text text-center title is-4"> Novi post </h4>
+
+    <div class="forma">
+        <form asp-controller="Post" asp-action="SnimiPost" class="register-forma" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" asp-for="AutorId"/>
+           
+
+            @*   Naslov   *@
+            <div class="field">
+                <label asp-for="Naslov" class="label"> Naslov posta </label>
+                <div class="control">
+                    <input asp-for="Naslov" class="input" placeholder="Unesite naslov posta" />
+                </div>
+            </div>
+
+            @*   Sadržaj   *@
+            <div class="field">
+                <label class="label"> Uredite sadržaj posta </label>
+                <div class="control has-icons-left">
+                    <textarea asp-for="Sadrzaj" id="txt-area" rows="10" cols="80">  </textarea>
+                </div>
+            </div>
+
+            @*   Upload slike   *@
+            <div class="field">
+                <div class="file is-info has-name">
+                    <label class="file-label">
+                        <input accept="image/*" class="file-input" type="file" name="slika" id="fajl">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                Odaberi sliku
+                            </span>
+                        </span>
+                        <span class="file-name" id="file-name">
+                            Slika nije odabrana
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <hr/>
+            <div class="field">
+                <div class="control">
+                    <input type="submit" value="Dodaj post" class="button is-success" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    tinymce.init({
+        selector: '#txt-area',
+        plugins: 'a11ychecker advcode casechange formatpainter linkchecker lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+        toolbar_drawer: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name'
+    });
+
+    $("#fajl").on("change",
+        function(event) {
+            var input = event.srcElement;
+            $("#file-name").html(this.files[0].name);
+        });
+
+</script>

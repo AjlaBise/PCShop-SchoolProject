@@ -1,0 +1,85 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<ClassLibrary.Models.Post>
+@using ReflectionIT.Mvc.Paging
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, ReflectionIT.Mvc.Paging
+}
+
+
+<style>
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+</style>
+
+<div class="not-layout">
+
+    <h4 class="text-center title is-4"> Postovi </h4>
+    @foreach (var x in Model)
+    {
+        <div class="box" style="height: 200px">
+            <article class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="@x.ImageLocation" alt="Post-image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p class="">
+                            <strong><a asp-area="" asp-controller="Post" asp-action="Pregled" asp-route-postId="@x.Id" data-toggle="tooltip" data-placement="top" title="Pregledaj">@x.Naslov</a></strong>
+                            <small><span>&#x40</span>@x.Autor.UserName</small>
+                            <small> @x.GetDatumAsText() </small>
+                            <br>
+                        </p>
+                        <p class="short-text">
+                            @x.Sadrzaj
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    }
+
+
+    <nav aria-label="Post Paging">
+        <vc:pager paging-list="@Model" />
+    </nav>
+
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>
+
+<script src="lib/jquery/dist/jquery.min.js"></script>
+<script src="lib/jquery/dist/jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $('.short-text').each(function (f) {
+            var newstr = $(this).text().substring(0, 550);
+            $(this).text(newstr + "..");
+        });
+    });
+
+</script>
+
+<script>
+    var n = document.getElementsByClassName("short-text");
+    for (let i = 0; i < n.length; i++) {
+        console.log(n[i].textContent);
+        n[i].innerHTML = n[i].textContent.replace("\"", "");
+    }
+</script>

@@ -1,0 +1,262 @@
+﻿@model OnlineShop.ViewModels.StatistikaIndexVM
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<link rel="stylesheet" href="~/css/StatistikaIndex.css"/>
+
+<div class="not-layout">
+    <br />
+    <h2 class="text text-center title is-2" style="color:darkslategrey"> Prikaz narudžbi po godinama </h2>
+    <h5 class="text text-center subtitle is-5" style="color:darkslategrey"> Odaberite godinu i pogledajte broj narudžbi u svakom mjesecu </h5> <br />
+    <div id="narudzbe-stat-parent">
+        <div id="narudzbe-stat-forma">
+            <div class="field is-horizontal">
+                <label class="label is-small" style="padding-top: 5px; padding-right: 10px">Odaberi godinu</label>
+                <div class="control">
+                    <div class="select is-small">
+                        <select name="godina" id="narudzbe-stat-select">
+                            @foreach (var godina in Model.Godine)
+                            {
+                                if (godina == ViewBag.year)
+                                {
+                                    <option selected value="@godina"> @godina </option>
+                                }
+                                else
+                                {
+                                    <option value="@godina"> @godina </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="narudzbe-stat" style="width: 82%; margin: auto;">
+        </div>
+    </div>
+    <hr />
+    <br />
+
+    <h2 class="text text-center title is-2" style="color:darkslategrey"> Top 3 kupca </h2>
+    <h5 class="text text-center subtitle is-5" style="color:darkslategrey"> Prva tri kupca sa najviše ostvarenih narudžbi </h5> <br />
+
+    <br />
+    <div class="kupci-top3">
+        <div class="tile is-parent">
+            <article class="tile is-child box kupac">
+                <p class="title">2</p>
+                <p class="title">@Model.TopKupci[1].Key.UserName</p>
+                <p class="subtitle">Ostvarenih narudžbi: @Model.TopKupci[1].Value</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box kupac" id="prvi">
+                <p class="title">1</p>
+                <p class="title">@Model.TopKupci[0].Key.UserName</p>
+                <p class="subtitle">Ostvarenih narudžbi: @Model.TopKupci[0].Value</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box kupac">
+                <p class="title">3</p>
+                <p class="title">@Model.TopKupci[2].Key.UserName</p>
+                <p class="subtitle">Ostvarenih narudžbi: @Model.TopKupci[2].Value</p>
+            </article>
+        </div>
+    </div>
+    <br />
+    <br />
+    <hr />
+    <br />
+
+    <h2 class="text text-center title is-2" style="color: darkcyan"> Proizvodi </h2>
+    <h5 class="text text-center subtitle is-5" style="color:darkslategrey"> Pregledajte proizvode koji su uticajni budući rad i prodaju </h5> <br />
+
+
+    <div class="product-rang-title" style="text-align: center">
+        <h3 class="is-text title text-center is-3"> Najviše prodan </h3>
+        <h3 class="is-text title text-center is-3"> Najmanje prodan </h3>
+    </div>
+
+    <div class="product-rang">
+        <div class="col-sm-5">
+            <div class="card" style="transform:scale(0.9); margin: auto; border: 1px solid green">
+                <div class="card-image">
+                    <figure class="image is-4by3" style="transform:scale(0.8)">
+                        <img class="card-image" src="@Model.NajprodavanijIProizvod.Key.imageLocation" />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4"> <a style="text-decoration: none" asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@Model.NajprodavanijIProizvod.Key.ProizvodID"> @Model.NajprodavanijIProizvod.Key.NazivProizvoda </a> </p>
+                        @if (Model.NajprodavanijIProizvod.Key.snizen)
+                        {
+                            <p class="subtitle is-6">
+                                Cijena: @Model.NajprodavanijIProizvod.Key.Cijena KM
+
+                                <span class="text-success media-right is-3"> <b> SNIŽENO! </b></span>
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="subtitle is-6">
+                                Cijena: @Model.NajprodavanijIProizvod.Key.Cijena KM
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <footer class="card-footer">
+                    <p class=" is-3 is-rounded is-inverted card-footer-item"> <b> @Model.NajprodavanijIProizvod.Value prodatih komada </b> </p>
+                </footer>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="card" style="transform:scale(0.9); margin: auto; border: 1px solid darkred">
+                <div class="card-image">
+                    <figure class="image is-4by3" style="transform:scale(0.8)">
+                        <img class="card-image" src="@Model.NajmanjeprodavanijIProizvod.Key.imageLocation" />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4"> <a style="text-decoration: none" asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@Model.NajmanjeprodavanijIProizvod.Key.ProizvodID"> @Model.NajmanjeprodavanijIProizvod.Key.NazivProizvoda </a> </p>
+                        @if (Model.NajmanjeprodavanijIProizvod.Key.snizen)
+                        {
+                            <p class="subtitle is-6">
+                                Cijena: @Model.NajmanjeprodavanijIProizvod.Key.Cijena KM
+
+                                <span class="text-success media-right is-3"> <b> SNIŽENO! </b></span>
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="subtitle is-6">
+                                Cijena: @Model.NajmanjeprodavanijIProizvod.Key.Cijena KM
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <footer class="card-footer">
+                    <p class=" is-4 is-rounded is-inverted card-footer-item"> <b> @Model.NajmanjeprodavanijIProizvod.Value prodatih komada </b> </p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <br />
+        <div class="product-rang-title" style="text-align: center">
+        <h3 class="text title is-3"> Proizvod sa najvećom količinom </h3>
+        <h3 class="text title is-3"> Proizvod sa najmanjom količinom </h3>
+    </div>
+
+
+    <div class="product-rang">
+        <div class="col-sm-5">
+            <div class="card" style="transform:scale(0.9); margin: auto; border: none">
+                <div class="card-image">
+                    <figure class="image is-4by3" style="transform:scale(0.8)">
+                        <img class="card-image" src="@Model.NajvecaKolicina.imageLocation" />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4"> <a style="text-decoration: none" asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@Model.NajvecaKolicina.ProizvodID"> @Model.NajvecaKolicina.NazivProizvoda </a> </p>
+                        @if (Model.NajvecaKolicina.snizen)
+                        {
+                            <p class="subtitle is-6">
+                                Cijena: @Model.NajvecaKolicina.Cijena KM
+
+                                <span class="text-success media-right is-3"> <b> SNIŽENO! </b></span>
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="subtitle is-6">
+                                Cijena: @Model.NajvecaKolicina.Cijena KM
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <footer class="card-footer">
+                    <p class=" is-3 is-rounded is-inverted card-footer-item"> <b> @Model.NajvecaKolicina.Kolicina komada na stanju </b> </p>
+                </footer>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="card" style="transform:scale(0.9); margin: auto; border:none">
+                <div class="card-image">
+                    <figure class="image is-4by3" style="transform:scale(0.8)">
+                        <img class="card-image" src="@Model.NajmanjaKolicina.imageLocation" />
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4"> <a style="text-decoration: none" asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@Model.NajmanjaKolicina.ProizvodID"> @Model.NajmanjaKolicina.NazivProizvoda </a> </p>
+                        @if (Model.NajmanjaKolicina.snizen)
+                        {
+                            <p class="subtitle is-6">
+                                Cijena: @Model.NajmanjaKolicina.Cijena KM
+
+                                <span class="text-success media-right is-3"> <b> SNIŽENO! </b></span>
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="subtitle is-6">
+                                Cijena: @Model.NajmanjaKolicina.Cijena KM
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <footer class="card-footer">
+                    <p class=" is-4 is-rounded is-inverted card-footer-item" style="color: darkred"> <b> @Model.NajmanjaKolicina.Kolicina komada na stanju </b> </p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+</div>
+
+<script>
+
+    $.post("/Administrator/Statistika/NarudzbaPartial",
+        { 'godina': null },
+            function(result) {
+                $("#narudzbe-stat").html(result);
+            }
+    );
+
+    $("#narudzbe-stat-select").on("change",
+        function (e) {
+            e.preventDefault();
+            $('html, body').stop();
+            $.post("/Administrator/Statistika/NarudzbaPartial",
+                { 'godina': $("#narudzbe-stat-select").val()},
+                function (result) {
+                        $("#narudzbe-stat").empty();
+                        $("#narudzbe-stat").html(result);
+                    }
+            );
+            return false;
+        });
+</script>

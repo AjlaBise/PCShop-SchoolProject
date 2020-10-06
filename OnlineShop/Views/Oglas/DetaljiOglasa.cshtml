@@ -1,0 +1,83 @@
+﻿@model ClassLibrary.Models.Oglas
+@{
+    ViewData["Title"] = "DetaljiOglasa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/OglasLayout.css" asp-append-version="true" />
+<div class="not-layout" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+    <div id="start" style="margin-left:50px;">
+        <h4 class="text-center title is-4" style="text-align:center; margin-top:20px;">Detalji oglasa</h4>
+
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2" ;">
+                    Naslov:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Naslov)
+                    <hr />
+                </dd>
+
+                <dt class="col-sm-2">
+                    Sadržaj:
+                </dt>
+                <dd class="col-sm-10" id="sadrzaj">
+                    @Html.DisplayFor(model => model.Sadrzaj)
+                    <hr />
+                    <hr />
+                </dd>
+
+                <dt class="col-sm-2">
+                    Broj pozicija:
+                </dt>
+                <dd class="col-sm-10">
+
+                    @Html.DisplayFor(model => model.BrojPozicija)
+                    <hr />
+                </dd>
+
+                <dt class="col-sm-2">
+                    Lokacija:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Lokacija)
+                    <hr />
+                </dd>
+                <dt class="col-sm-2">
+                    Trajanje:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trajanje) dana
+                    <hr />
+                </dd>
+                <dt class="col-sm-2">
+                    Datum isteka:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DatumIsteka)
+                    <hr />
+                </dd>
+                <dt class="col-sm-2">
+                    Aktivan:
+
+                </dt>
+            
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Aktivan)
+                    <hr />
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a style="margin-left:80%;" title="Nazad"; class="btn btn-outline-primary" asp-action="Prikazi"><img src="~/icons/back.png"/></a>
+        </div>
+    </div>
+
+    <script>
+        var sadrzaj = document.getElementById("sadrzaj");
+        sadrzaj.innerHTML = sadrzaj.textContent.replace("\"", "");
+    </script>
+
+</div>

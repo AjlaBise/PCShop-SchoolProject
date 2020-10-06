@@ -1,0 +1,59 @@
+﻿@model ClassLibrary.Models.AppUser
+@{
+    ViewData["Title"] = "PregledProfila";
+}
+
+
+<h2 class="text text-center title is-2">Pregled profila</h2>
+
+<div class="info-list">
+    <i class="fas fa-user-tie korisnik-icon"></i>
+    <ul class="list list-title">
+        <li>Korisničko ime |</li>
+        <li>E-mail adresa |</li>
+        <li>Potvrđena e-mail adresa |</li>
+        <li>Broj telefona |</li>
+        <li>Ime i prezime |</li>
+        <li>Spol |</li>
+        <li>Država |</li>
+        <li>Datum registracije |</li>
+        <li>Uključena pretplata |</li>
+    </ul>
+    <ul class="list list-data">
+        <li>@Model.UserName</li>
+        <li>@Model.Email</li>
+        @if (Model.EmailConfirmed)
+        {
+            <li>DA</li>
+        }
+        else
+        {
+            <li>NE</li>
+        }
+        <li>@Model.PhoneNumber</li>
+        <li>@string.Concat(Model.Ime + " " + Model.Prezime)</li>
+        @if (Model.Spol == 'M')
+        {
+            <li>Muško</li>
+        }
+        else if (Model.Spol == 'Ž')
+        {
+            <li>Žensko</li>
+        }
+        else
+        {
+            <li>Nepoznato</li>
+        }
+        <li>@Model.Sjediste.Naziv</li>
+        <li>@Model.DatumRegistracije.ToString("dd/MM/yyyy")</li>
+
+        @if (Model.Pretplacen)
+        {
+            <li>DA</li>
+        }
+        else
+        {
+            <li>NE</li>
+        }
+    </ul>
+</div>

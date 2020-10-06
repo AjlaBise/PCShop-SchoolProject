@@ -1,0 +1,100 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<ClassLibrary.Models.Proizvod>
+
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Org.BouncyCastle.Bcpg
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Naziv</th>
+            <th>Cijena</th>
+            <th>Količina</th>
+            <th>Kategorija</th>
+            <th>Proizvođač</th>
+            <th>Uvoznik</th>
+            <th>Akcija</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model)
+        {
+            <tr id="table-rows-product">
+                <td> <b> @x.ProizvodID </b> </td>
+                <td style="color:darkcyan"> <b> @x.NazivProizvoda </b> </td>
+                <td> @String.Format("{0:0.00}", @x.Cijena) KM </td>
+                <td> @x.Kolicina </td>
+                <td> @x.kategorija.NazivKategorije </td>
+                <td> @x.Proizvodjac.NazivProizvodjaca </td>
+                <td> @x.uvoznik.NazivUvoznika </td>
+
+                <td>
+                    <a asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@x.ProizvodID" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Detaljno"><i style="color:white" class="fas fa-info-circle"></i></a>
+                    <a asp-controller="Proizvod" asp-action="EditRedirect" asp-route-id="@x.ProizvodID" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Modifikuj"><i style="color:white" class="far fa-edit"></i></a>
+                    <a asp-controller="Proizvod" asp-action="UkloniProizvod" asp-route-id="@x.ProizvodID" class="button is-danger" data-toggle="tooltip" data-placement="bottom" title="Ukloni"><i style="color:white" class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Proizvod Paging">
+    <vc:pager paging-list="@Model" />
+</nav>
+<br />
+<br />
+<br />
+
+<script>
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    var pageLinks = document.getElementsByClassName("page-link");
+
+    for (let i = 0; i < pageLinks.length; i++) {
+        $(pageLinks[i]).removeAttr("href");
+        if ($(pageLinks[i]).attr("aria-label") == "Next") {
+            pageLinks[i].onclick = function () {
+                let element = document.getElementsByClassName("active")[0];
+                let nextPage = $(element).find("a").html();
+
+                $.post("/Administrator/Proizvod/GetProizvode",
+                    { "page": eval(nextPage.toString() + " + 1"),  "sortBy": vrijednost },
+                    function (result) {
+                        $("#product-partial").empty();
+                        $("#product-partial").html(result);
+                    });
+            }
+        }
+        else if ($(pageLinks[i]).attr("aria-label") == "Previous") {
+            pageLinks[i].onclick = function () {
+                let element = document.getElementsByClassName("active")[0];
+                let nextPage = $(element).find("a").html();
+
+                $.post("/Administrator/Proizvod/GetProizvode",
+                    { "page": eval(nextPage.toString() + " - 1"),  "sortBy": vrijednost },
+                    function (result) {
+                        $("#product-partial").empty();
+                        $("#product-partial").html(result);
+                    });
+            }
+        }
+        else {
+            pageLinks[i].onclick = function () {
+                var Page = $(pageLinks[i]).html();
+                $.post("/Administrator/Proizvod/GetProizvode",
+                    { "page": Page,  "sortBy": vrijednost },
+                    function (result) {
+                        $("#product-partial").empty();
+                        $("#product-partial").html(result);
+                    });
+            };
+        }
+    };
+
+</script>

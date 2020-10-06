@@ -1,0 +1,160 @@
+﻿@model PagingList<OnlineShop.ViewModels.NarudzbaCollection>
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Org.BouncyCastle.Bcpg
+@using ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, ReflectionIT.Mvc.Paging
+}
+
+<link rel="stylesheet" href="~/css/NarudzbaIndex.css" />
+
+<div class="not-layout">
+
+    <h1 class="title is-2 text-center"> Narudžbe </h1>
+
+    <form asp-controller="Narudzbe" asp-action="Index">
+        <div class="field is-horizontal">
+            <label class="label is-small" style="padding-top: 5px; padding-right: 10px">Filtriraj po</label>
+            <div class="control">
+                <div class="select is-small">
+                    <select name="orderBy" id="filter-order">
+                        <option selected value="0"> Sve narudžbe </option>
+                        <option value="1"> Aktivne narudžbe </option>
+                        <option value="2"> Neaktivne narudžbe </option>
+                        <option value="3"> Aktivne nepotvrđene narudžbe </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="filter-button" class="button is-small is-primary is-outlined"> Osvježi </button>
+    </form>
+    <hr />
+    <nav style="padding-bottom: 15px" aria-label="Narudzbe Paging" style="width: 100%; margin-right: 0;">
+        <vc:pager paging-list="@Model" />
+    </nav>
+
+    <div class="orders">
+        @foreach (var x in Model)
+        {
+            <div class="narudzba">
+                <p class="title text-center is-4"> Narudžba ID: @x.narudzba.Id </p>
+
+                @if (x.narudzba.Potvrdjena)
+                {
+                    <div class="content-right">
+                        <button disabled class="button is-success"> Potvrđena </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="content-right">
+                        @if (!x.narudzba.Aktivna)
+                        {
+                            <button disabled value="@x.narudzba.Id" class="potvrdi-narudzbu button is-primary"> Potvrdi narudžbu </button>
+                            <p class="text text-danger is-small"> Kupac nije potvrdio </p>
+                        }
+                        else
+                        {
+                            <button value="@x.narudzba.Id" class="potvrdi-narudzbu button is-primary"> Potvrdi narudžbu </button>
+                        }
+
+                    </div>
+                }
+
+                <div class="detalji">
+                    <p class="">Naručioc: @string.Concat(@x.narudzba.Narucioc.Ime + " " + @x.narudzba.Narucioc.Prezime)</p>
+                    <p class="">Datum narudžbe: @x.narudzba.DatumKreiranjaNarudzbe.ToShortDateString()</p>
+                    <br />
+                </div>
+
+                @*<div class="kontakt">
+                        <p class=""> Država: </p>
+                        <p class=""> Grad: </p>
+                        <p class=""> Adresa: </p>
+                        <p class=""> Kontakt tel:</p>
+                    </div>*@
+
+                <table class="table is-bordered tabela">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID Proizvoda</th>
+                            <th>Naziv Proizvoda</th>
+                            <th>Cijena (kom)</th>
+                            <th>Uvoznik</th>
+                            <th>Količina</th>
+                            <th>Ukupno</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < x._container.Proizvodi.Count; i++)
+                        {
+                            <tr>
+                                <td>@x._container.Proizvodi[i].ProizvodID</td>
+                                <td> <a asp-controller="Proizvod" asp-action="Detaljno" asp-route-id="@x._container.Proizvodi[i].ProizvodID"> @x._container.Proizvodi[i].NazivProizvoda </a> </td>
+                                <td>@x._container.Proizvodi[i].Cijena KM</td>
+                                <td>@x._container.Proizvodi[i].uvoznik.NazivUvoznika</td>
+                                <td>@x._container.Kolicine[i]</td>
+                                <td> @Math.Round(x._container.Sume[i], 2) KM </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" style="text-align: right"> Ukupan iznos </td>
+                            <td style="color: white; background-color: rgba(52,58,64, 0.6); text-align:center"> <b> @x.UkupnaCijena KM </b> </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+    </div>
+    <nav aria-label="Narudzbe Paging">
+        <vc:pager paging-list="@Model" />
+    </nav>
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
+<br />
+<br />
+<br />
+<br />
+
+<script>
+
+    var x = document.getElementsByClassName("potvrdi-narudzbu");
+
+    for (let i = 0; i < x.length; i++) {
+        x[i].onclick = function () {
+            $.post("/Administrator/Narudzbe/PotvrdiNarudzbu",
+                { "narudzbaId": $(x[i]).val() },
+                function (result) {
+                    $(x[i]).addClass("is-success");
+                    $(x[i]).removeClass("is-primary");
+                    $(x[i]).attr("disabled", true);
+                    $(x[i]).html("Potvrđena");
+                });
+        }
+    };
+
+    var selector = document.getElementById("filter-order");
+    if (@TempData["feelter"] == 0) {
+        selector.options[0].selected = true;
+    }
+    else if (@TempData["feelter"] == 1) {
+        selector.options[1].selected = true;
+    }
+    else if (@TempData["feelter"] == 2) {
+        selector.options[2].selected = true;
+    }
+    else {
+        selector.options[3].selected = true;
+    }
+
+</script>

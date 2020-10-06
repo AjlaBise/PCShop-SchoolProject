@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+<div class="spacing"></div>
+
+<p class="text title is-4" style="color: darkred">
+    @if (ViewBag.Info != null)
+    {
+        @ViewBag.Info
+    }
+</p>
+
+<h5 class="text is-" style="color: darkblue">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        @ViewBag.ErrorMsg
+    }
+</h5>
+
+@if (ViewBag.ErrorMsg == "Vaši podaci nisu ispravni" || ViewBag.ErrorMsg == "Vaša lozinka nije ispravna")
+{
+    <br />
+    <ul>
+        <li class="">
+            <p><b> Zaboravili ste lozinku? </b></p>
+            <a asp-action="ForgotPassword" class="button is-danger is-outlined"> Resetuj lozinku </a>
+            <br />
+            <br />
+            <br />
+        </li>
+        <li class="">
+            <p><b> Pokušajte ponovo </b></p>
+            <a asp-action="Login" class="button is-info" style="color:white"> Prijava </a>
+            <br />
+            <br />
+            <br />
+        </li>
+    </ul>
+
+} 
+
+@if (ViewBag.ErrorMsg == "Vaš račun nije verifikovan. Provjerite vaš e-mail inbox")
+{
+    <br />
+    <ul>
+        <li class="">
+            <p><b> Provjerite da li ste potvrdili e-mail adresu </b></p>
+            <a class="button is-danger is-outlined" asp-action="NisamDobioMail" asp-route-UserID="@ViewBag.Id"> Nisam dobio mail, pošalji ponovo! </a>
+            <br />
+            <br />
+            <br />
+        </li>
+    </ul>
+
+}

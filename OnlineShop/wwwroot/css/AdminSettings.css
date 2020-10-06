@@ -1,0 +1,87 @@
+﻿.admin-setting {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 50px;
+    grid-column-gap: 50px;
+    align-content: center;
+    justify-items: center;
+}
+
+.setting:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+    -webkit-box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
+}
+
+.setting {
+    animation: setting-animation .7s;
+    width: 300px;
+    height: 300px;
+    transition: all .2s;
+    border-radius: 10px; 
+}
+
+@keyframes setting-animation {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    60% { opacity: 0.75; transform: scale(1.05); }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.icon-box {
+    width: 100%;
+}
+
+.setting-icon {
+    width: 100%;
+    text-align: center;
+    font-size: 70px;
+}
+
+#editor-mail {
+    height: 400px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.korisnik-icon {
+    font-size: 370px;
+    color: #A4CBE5;
+}
+
+.info-list {
+    margin-top: 15px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 20% 40% 40%;
+}
+
+.list-title {
+    text-align: right;
+}
+
+.list {
+    margin-left: 10px;
+    margin-top: 20px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.list>li {
+    font-size: 22px;
+}
+
+.list-data {
+    opacity: 0.85;
+}

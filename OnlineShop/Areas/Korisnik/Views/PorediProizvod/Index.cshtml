@@ -1,0 +1,139 @@
+﻿@model OnlineShop.ViewModels.KorpaProizvodVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+<link rel="stylesheet" href="~/css/Poredi.css" />
+
+<table>
+    @foreach (var stavkaKorpe in Model.StavkeKorpe)
+    {
+    <div id="container">
+        
+        <div class="whole ">
+
+            <div class="plan">
+                <div class="type ultimate">
+                    <p>@stavkaKorpe.NazivProizvoda</p>
+                </div>
+                <div class="header">
+                    <img src="@stavkaKorpe.UrlSlike" style="width:150px; height:150px;" />
+
+                </div>
+                <div class="content">
+                    <ul>
+                        <li><span>Cijena : </span>@stavkaKorpe.Cijena</li>
+                        <li><span>Snižen : </span>@stavkaKorpe.Snizen</li>
+                        <li><span>Uvoznik : </span>@stavkaKorpe.Uvoznik</li>
+                        <li><span>Proizvođač : </span>@stavkaKorpe.Proizvodjac</li>
+
+                    </ul>
+                </div>
+                <div class="product-removal">
+                    <button data-id="@stavkaKorpe.ProizvodId" class="remove-product" style=" font-size:18px; width:200px; height:40px; border-radius:15px;">
+                        Ukloni
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    }
+</table>
+
+<script>
+    /* Remove item from cart */
+
+    /* Set rates + misc */
+        var taxRate = 0.05;
+        var shippingRate = 15.00;
+        var fadeTime = 300;
+
+
+        /* Assign actions */
+    $('.product-quantity input').change(function () {
+
+        var proizvodId = $(this).data("id");
+        var quantity = $(this).val();
+
+        updateQuantity(quantity, proizvodId);
+    });
+
+    $('.product-removal button').click(function () {
+            removeItem(this);
+    });
+
+
+    /* Recalculate cart */
+    function recalculateCart() {
+        var subtotal = 0;
+
+        /* Sum up row totals */
+        $('.product').each(function () {
+            subtotal += parseFloat($(this).children('.product-line-price').text());
+        });
+
+        /* Calculate totals */
+        var tax = subtotal * taxRate;
+        var shipping = (subtotal > 0 ? shippingRate : 0);
+        var total = subtotal + tax + shipping;
+
+        /* Update totals display */
+        $('.totals-value').fadeOut(fadeTime, function () {
+
+            $('#cart-total').html(total.toFixed(2));
+            if (total == 0) {
+            $('.checkout').fadeOut(fadeTime);
+            } else {
+            $('.checkout').fadeIn(fadeTime);
+            }
+            $('.totals-value').fadeIn(fadeTime);
+        });
+    }
+
+
+    /* Update quantity */
+    function updateQuantity(quantityInput, proizvodId) {
+            /* Calculate line price */
+
+            $.post("/Korisnik/Korpa/AzurirajKolicinuStavke",
+                { kolicina: quantityInput, proizvodId },
+                function () {
+
+                    var productRow = $(".product-quantity input").parent().parent();
+                    var price = parseFloat(productRow.children('.product-price').text());
+                    var quantity = $(".product-quantity input").val();
+                    var linePrice = price * quantity;
+
+                    /* Update line price display and recalc cart totals */
+                    productRow.children('.product-line-price').each(function () {
+                        $(this).fadeOut(fadeTime, function () {
+                            $(this).text(linePrice.toFixed(2));
+                            recalculateCart();
+                            $(this).fadeIn(fadeTime);
+                        });
+                    });
+                });
+    }
+
+
+    /* Remove item from cart */
+    function removeItem(removeButton) {
+            /* Remove row from DOM and recalc cart total */
+
+            $.post("/Korisnik/PorediProizvod/UkloniStavku",
+                { proizvodId: $(removeButton).data("id") },
+                function () {
+
+                    var productRow = $(removeButton).parent().parent();
+                    productRow.slideUp(fadeTime, function () {
+                        productRow.remove();
+                        recalculateCart();
+                    });
+                });
+    }
+</script>
+
+</script>

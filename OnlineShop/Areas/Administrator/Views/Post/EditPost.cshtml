@@ -1,0 +1,88 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@model OnlineShop.ViewModels.EditPostVM
+@{
+    ViewData["Title"] = "EditPost";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.tiny.cloud/1/hp7m5by19tqm6brtnalii71vu84aoxh4xf9hg03q3vx74yev/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<div class="not-layout">
+    <h4 class="text text-center title is-4"> Uredi post </h4>
+
+    <div class="forma">
+        <form asp-controller="Post" asp-action="SpasiPromjene" class="register-forma" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <input type="hidden" value="@Model.postEdit.Id" asp-for="postEdit.Id"/>
+            <input type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" asp-for="postEdit.AutorId" />
+
+            @*   Naslov   *@
+            <div class="field">
+                <label asp-for="postEdit.Naslov" class="label"> Naslov posta </label>
+                <div class="control">
+                    <input asp-for="postEdit.Naslov" class="input" value="@Model.postEdit.Naslov" />
+                </div>
+            </div>
+
+            @*   Sadržaj   *@
+            <div class="field">
+                <label class="label"> Uredite sadržaj posta </label>
+                <div class="control has-icons-left">
+                    <textarea asp-for="postEdit.Sadrzaj" id="txt-area" rows="10" cols="80"> @Model.postEdit.Sadrzaj </textarea>
+                </div>
+            </div>
+
+            @*   Upload slike   *@
+        <div class="field">
+            <div class="file is-info has-name">
+                <label class="file-label">
+                    <input accept="image/*" class="file-input" type="file" name="slika" id="fajl-edit">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Odaberi novu sliku
+                        </span>
+                    </span>
+                    <span class="file-name" id="file-name">
+                        @Model.postEdit.ImageLocation
+                    </span>
+                </label>
+                <span style="display: flex; align-items: center; justify-content: center; margin-left: 20px; color: darkblue">
+                    INFO: Ako ne odaberete novu sliku, stara slika će ostati sačuvana.
+                </span>
+            </div>
+        </div>
+            <hr />
+            <div class="field">
+                <div class="control">
+                    <input type="submit" value="Spasi promjene" class="button is-success" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    tinymce.init({
+        selector: '#txt-area',
+        plugins: 'a11ychecker advcode casechange formatpainter linkchecker lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+        toolbar_drawer: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name'
+    });
+
+    $("#fajl-edit").on("change",
+        function (event) {
+            var input = event.srcElement;
+            $("#file-name").html(this.files[0].name);
+        });
+
+</script>

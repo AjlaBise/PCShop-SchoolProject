@@ -1,0 +1,34 @@
+﻿#start{
+    margin-left: 20%;
+}
+h1, h4{
+    text-align: center;
+}
+
+.forma-oglas-add{
+    width: 90%;
+}
+
+.forma-oglas-edit {
+    width: 90%;
+}
+
+td, tr{
+    text-align: center;
+}
+
+.uredi, .det, .ukloni{
+    transition: all .1s;
+}
+
+.uredi:hover, .det:hover, .ukloni:hover{
+    transform: translateY(2px);
+}
+
+.det{
+
+}
+
+.ukloni{
+
+}

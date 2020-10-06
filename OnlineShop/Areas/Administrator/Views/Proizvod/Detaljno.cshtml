@@ -1,0 +1,68 @@
+﻿@model ClassLibrary.Models.Proizvod
+
+@{
+    ViewData["Title"] = "Detaljno";
+    var x = Model.imageLocation;
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<link rel="stylesheet" href="~/css/DetaljnoPage.css" asp-append-version="true" />
+
+<div class="not-layout">
+    <h4 class="text-center title is-6">Detaljni podaci o proizvodu</h4>
+    <hr />
+    <div class="details">
+        <img src="@x" alt="Slika proizvoda" width="420" class="details-image" />
+        <div class="tekst">
+            <dl class="row info">
+                <dt>
+                    Naziv proizvoda
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.NazivProizvoda)
+                </dd>
+                <dt>
+                    Cijena
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Cijena)KM
+                </dd>
+                <dt>
+                    Količina
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Kolicina) kom
+                </dd>
+                <dt>
+                    Opis
+                </dt>
+                <dd class="col-sm-10" style="white-space:pre-line" id="sadrzaj-proizvod"> @Model.OpisProizvoda </dd>
+                <dt>
+                    Kategorija
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.kategorija.NazivKategorije)
+                </dd>
+                <dt>
+                    Podaci o dobavljaču
+                </dt>
+                <dd class="col-sm-10">
+                    Uvoznik: @Html.DisplayFor(model => model.uvoznik.NazivUvoznika) <br />
+                    Adresa:  @Html.DisplayFor(model => model.uvoznik.AdresaUvoznika) <br />
+                    Telefon: <a href="tel:@Html.DisplayFor(model => model.uvoznik.BrojTelefona)">@Html.DisplayFor(model => model.uvoznik.BrojTelefona) </a> <br />
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <br />
+    <div class="controls">
+        <a asp-action="EditRedirect" asp-route-id="@Model.ProizvodID" class="btn btn-light"><i class="fas fa-edit ikona-edit"></i> Uredi </a> |
+        <a asp-action="Index" class="btn btn-light indexpage"><i class="fas fa-angle-left ikona-back"></i>  Vrati se nazad</a>
+    </div>
+</div>
+
+<script>
+    var sadrzaj = document.getElementById("sadrzaj-proizvod");
+    sadrzaj.innerHTML = sadrzaj.textContent.replace("\"", "");
+</script>

@@ -1,0 +1,166 @@
+﻿@model OnlineShop.ViewModels.KorpaProizvodVM
+@{
+    ViewData["Title"] = "Korpa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+
+<link rel="stylesheet" href="~/css/KorpaStyles.css" />
+
+
+
+<h1 style="        text-align: center;
+        font-size: 35px;
+        font-family:Castellar;
+        ">
+    Moja korpa
+</h1>
+<div class="shopping-cart" style="margin-top:5%;">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert-danger text-danger p-2 rounded mb-2">
+            @Html.ValidationSummary()
+        </div>
+    }
+    <div class="column-labels">
+        <label class="product-image">Image</label>
+        <label class="product-details">Product</label>
+        <label class="product-price">Cijena</label>
+        <label class="product-quantity">Količina</label>
+        <label class="product-removal">Ukloni</label>
+        <label class="product-line-price">Ukupno</label>
+    </div>
+    @foreach (var stavkaKorpe in Model.StavkeKorpe)
+
+    {
+        <div class="product">
+            <div class="product-image">
+                <img src="@stavkaKorpe.UrlSlike">
+            </div>
+            <div class="product-details">
+                <div class="product-title">@stavkaKorpe.NazivProizvoda</div>
+                <p class="product-description">@stavkaKorpe.Opis</p>
+            </div>
+            <div class="product-price">
+                @stavkaKorpe.Cijena
+            </div>
+            <div class="product-quantity">
+                <input type="number" data-id="@stavkaKorpe.ProizvodId" value="@stavkaKorpe.Kolicina" min="1">
+            </div>
+            <div class="product-removal">
+                <button data-id="@stavkaKorpe.ProizvodId" class="remove-product">
+                    Ukloni
+                </button>
+            </div>
+            <div class="product-line-price">
+                @stavkaKorpe.Ukupno
+            </div>
+        </div>
+    }
+
+
+    <div class="totals">
+
+        <div class="totals-item totals-item-total">
+            <label>Ukupno</label>
+            <div class="totals-value" id="cart-total">@Model.Ukupno</div>
+        </div>
+    </div>
+
+    <form asp-action="Checkout" asp-controller="Korpa" asp-area="Korisnik">
+        <button type="submit" class="checkout" >Potvrdi</button>
+    </form>
+
+</div>
+
+<script>
+    /* Set rates + misc */
+    var taxRate = 0.05;
+    var shippingRate = 15.00;
+    var fadeTime = 300;
+
+
+    /* Assign actions */
+    $('.product-quantity input').change(function () {
+
+        var proizvodId = $(this).data("id");
+        var quantity = $(this).val();
+
+        updateQuantity(quantity, proizvodId);
+    });
+
+    $('.product-removal button').click(function () {
+        removeItem(this);
+    });
+
+
+    /* Recalculate cart */
+    function recalculateCart() {
+        var subtotal = 0;
+
+        /* Sum up row totals */
+        $('.product').each(function () {
+            subtotal += parseFloat($(this).children('.product-line-price').text());
+        });
+
+        /* Calculate totals */
+        var tax = subtotal * taxRate;
+        var shipping = (subtotal > 0 ? shippingRate : 0);
+        var total = subtotal + tax + shipping;
+
+        /* Update totals display */
+        $('.totals-value').fadeOut(fadeTime, function () {
+        
+            $('#cart-total').html(total.toFixed(2));
+            if (total == 0) {
+                $('.checkout').fadeOut(fadeTime);
+            } else {
+                $('.checkout').fadeIn(fadeTime);
+            }
+            $('.totals-value').fadeIn(fadeTime);
+        });
+    }
+
+
+    /* Update quantity */
+    function updateQuantity(quantityInput, proizvodId) {
+    /* Calculate line price */
+
+        $.post("/Korisnik/Korpa/AzurirajKolicinuStavke",
+            { kolicina: quantityInput, proizvodId },
+            function () {
+
+                var productRow = $(".product-quantity input").parent().parent();
+                var price = parseFloat(productRow.children('.product-price').text());
+                var quantity = $(".product-quantity input").val();
+                var linePrice = price * quantity;
+
+                /* Update line price display and recalc cart totals */
+                productRow.children('.product-line-price').each(function () {
+                    $(this).fadeOut(fadeTime, function () {
+                        $(this).text(linePrice.toFixed(2));
+                        recalculateCart();
+                        $(this).fadeIn(fadeTime);
+                    });
+                });
+            });
+    }
+
+
+    /* Remove item from cart */
+    function removeItem(removeButton) {
+    /* Remove row from DOM and recalc cart total */
+
+        $.post("/Korisnik/Korpa/UkloniStavku",
+            { proizvodId: $(removeButton).data("id") },
+            function () {
+
+                var productRow = $(removeButton).parent().parent();
+                productRow.slideUp(fadeTime, function () {
+                    productRow.remove();
+                    recalculateCart();
+                });
+            });
+    }
+</script>

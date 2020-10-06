@@ -1,0 +1,49 @@
+﻿@model OnlineShop.ViewModels.StatistikaNarudzbeVM
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<canvas id="bar-chart"> </canvas>
+
+<script>
+    var c1 = document.getElementById("bar-chart");
+
+    var chartData = [
+        @Model.NarudzbePoGodini.Find(x => x.Key == 1).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 2).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 3).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 4).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 5).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 6).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 7).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 8).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 9).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 10).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 11).Value,
+        @Model.NarudzbePoGodini.Find(x => x.Key == 12).Value,
+    ];
+
+    var x = new Chart(document.getElementById("bar-chart"), {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+            datasets: [
+                {
+                    data: chartData,
+                    label: "Broj narudžbi",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Količina narudžbi na mjesečnom nivou u ' + @ViewBag.year.ToString() + ' godini'
+            }
+        }
+    });
+
+</script>

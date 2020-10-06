@@ -1,0 +1,106 @@
+﻿@model ClassLibrary.Models.Oglas
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<script src="~/js/moment.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.tiny.cloud/1/hp7m5by19tqm6brtnalii71vu84aoxh4xf9hg03q3vx74yev/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<link rel="stylesheet" href="~/css/OglasLayout.css" asp-append-version="true" />
+
+<div class="not-layout">
+    <div id="start">
+        <h4 class="text-center title is-4">Kreiraj novi oglas</h4>
+        <hr />
+        <div class="row forma-oglas-add">
+            <div class="forma-oglas-add">
+                <form asp-action="Create" class="forma-oglas-add">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Naslov" class="control-label"> Naslov </label>
+                        <input asp-for="Naslov" class="form-control" placeholder="Unesite naslov" />
+                        <span asp-validation-for="Naslov" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Sadrzaj" class="control-label"> Sadržaj </label>
+                        <textarea asp-for="Sadrzaj" class="form-control" placeholder="Modifikujte vaš sadržaj ovdje" id="oglas-sadrzaj"></textarea>
+                        <span asp-validation-for="Sadrzaj" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BrojPozicija" class="control-label"> Broj pozicija </label>
+                        <input asp-for="BrojPozicija" class="form-control" placeholder="Broj pozicija za radno mjesto" />
+                        <span asp-validation-for="BrojPozicija" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Lokacija"> Odaberite lokaciju: </label>
+                        <select class="form-control" asp-for="Lokacija">
+                            <option disabled selected> Odaberite grad </option>
+                            @foreach (var grad in new string[] { "Sarajevo", "Tuzla", "Zenica" })
+                            {
+                                <option value="@grad"> @grad </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Lokacija" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Trajanje" class="control-label"> Trajanje </label>
+                        <input id="trajanje" asp-for="Trajanje" type="number" class="form-control" placeholder="Unesite trajanje u danima" />
+                        <span asp-validation-for="Trajanje" class="text-danger"></span>
+                    </div>
+                    <p class="text-info"> Napomena: Datum objave i datum isteka se sami generišu na osnovu trajanja oglasa. </p>
+                    <div class="form-group">
+                        <label class="control-label"> Datum objave oglasa</label>
+                        <input value="@DateTime.UtcNow.ToString("dddd dd/MM/yyyy")" disabled class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> Datum isteka oglasa</label>
+                        <input class="form-control" name="timegenerated" disabled />
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="Aktivan" checked /> @Html.DisplayNameFor(model => model.Aktivan)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Dodaj oglas" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <script>
+
+            var trajanje = document.getElementById("trajanje");
+
+            trajanje.onkeyup = function () {
+                var value = moment().add(trajanje.value, 'days').format("dddd DD/MM/YYYY");
+                $('input[name=timegenerated]').val(value);
+            }
+
+            tinymce.init({
+                selector: '#oglas-sadrzaj',
+                plugins: 'a11ychecker advcode casechange formatpainter linkchecker lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+                toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+                toolbar_drawer: 'floating',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'Author name'
+            });
+
+        </script>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+    </div>
+</div>

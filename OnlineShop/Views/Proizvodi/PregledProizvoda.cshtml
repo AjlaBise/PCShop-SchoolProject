@@ -1,0 +1,80 @@
+﻿@model List<ClassLibrary.Models.Proizvod>
+@{
+    ViewData["Title"] = "PregledProizvoda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/PregledProizvoda.css" asp-append-version="true" />
+
+
+
+<div class="glavni">
+
+    <div class="desni">
+
+        @foreach (var x in Model)
+        {
+            <div class="boxovi">
+
+                <div class="slika">
+                    <img src="@x.imageLocation" />
+                </div>
+                <div class="donji">
+                    <table>
+
+                        <tr>
+                            <td style="font-weight: 700; " id="myUL">@x.NazivProizvoda</td>
+                        <tr>
+                        <tr>
+                            <td style="font-weight:500;">@x.Cijena KM</td>
+                        <tr />
+                        <tr>
+                            <td style="font-weight: 500;">@x.kategorija.NazivKategorije</td>
+                        <tr />
+                        <tr>
+                            <td style="font-weight:600; color: #058ee6;"><b>Na stanju: @x.Kolicina</b></td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-left:50%;">
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Recenzija" style="margin-left:20%;" asp-area="Korisnik" asp-controller="Recenzija" asp-action="Dodaj" asp-route-id="@x.ProizvodID"><img src="~/icons/review1.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    else
+
+                    {
+                        <strong><a title="Recenzija" style="margin-left:20%;" asp-area="" asp-controller="Account" asp-action="Login" asp-route-id=""><img src="~/icons/review1.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Korpa" asp-area="Korisnik" asp-controller="Korpa" asp-action="Index" asp-route-proizvodId="@x.ProizvodID"><img src="~/icons/basket.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    else
+                    {
+                        <strong><a title="Korpa" asp-area="" asp-controller="Account" asp-action="Login"><img src="~/icons/basket.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Detalji" asp-area="Korisnik" asp-controller="ProizvodDetalji" asp-action="PrikazDetalja" asp-route-id="@x.ProizvodID"><img src="~/icons/information.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    else
+                    {
+                        <strong><a title="Detalji" asp-area="" asp-controller="Account" asp-action="Login"><img src="~/icons/information.png" /></a></strong>
+                    }
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Poredjenje" asp-area="Korisnik" asp-controller="PorediProizvod" asp-action="Index" asp-route-proizvodId="@x.ProizvodID"><img src="~/icons/plus.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                    else
+                    {
+                        <strong><a title="Detalji" asp-area="" asp-controller="Account" asp-action="Login"><img src="~/icons/plus.png" style="width:20px; height:20px;" /></a></strong>
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+

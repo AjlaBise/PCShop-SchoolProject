@@ -1,0 +1,116 @@
+﻿@using ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, ReflectionIT.Mvc.Paging
+}
+
+<div class="not-layout">
+    <h4 class="text-center title is-4"> Lista proizvoda </h4>
+
+    <div class="field">
+        <p class="control has-icons-left">
+            <input id="proizvodi-pretraga" class="input" type="text"
+                   placeholder="Unesite naziv proizvoda, kategoriju ili nešto drugo..">
+            <span class="icon is-small is-left">
+                <i class="fas fa-search"></i>
+            </span>
+        </p>
+    </div>
+    <div class="field is-horizontal">
+        <label class="label is-small" style="padding-top: 5px; padding-right: 10px">Sortiraj po</label>
+        <div class="control">
+            <div class="select is-small">
+                <select id="sort-product" onchange="sortirajPo()">
+                    <option selected value="1"> ID Proizvoda </option>
+                    <option value="2">Cijeni - od najjeftinije do najskuplje</option>
+                    <option value="3">Cijeni - od najskuplje do najjeftinije</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div id="product-partial">
+        <img id="loading" src="~/pictures/Ripple-1s-200px.gif" />
+    </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+
+
+    var selectBox = document.getElementById("sort-product");
+
+    var vrijednost = selectBox.options[selectBox.selectedIndex].value;
+
+    function sortirajPo() {
+        vrijednost = selectBox.options[selectBox.selectedIndex].value;
+        $.post("/Administrator/Proizvod/GetProizvode",
+            { "page": 1, "search": $("#proizvodi-pretraga").val(), "sortBy": vrijednost },
+            function (result) {
+                $("#product-partial").empty();
+                $("#product-partial").html(result);
+            });
+    }
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $.post("/Administrator/Proizvod/GetProizvode",
+            {},
+            function (result) {
+                $("#product-partial").html(result);
+                $.post("/Administrator/Proizvod/GetProizvode",
+                    { "page": 1, "search": $("#pretraga").val(), "sortBy": vrijednost },
+                    function (result) {
+                        $("#product-partial").empty();
+                        $("#product-partial").html(result);
+                    });
+            });
+
+    });
+
+    $("#proizvodi-pretraga").keyup(function() {
+        $.post("/Administrator/Proizvod/GetProizvode",
+            { "page": 1, "search": $("#proizvodi-pretraga").val(), "sortBy": vrijednost },
+            function (result) {
+                $("#product-partial").empty();
+                $("#product-partial").html(result);                  
+            });
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    #loading {
+        display: block;
+        margin: auto;
+        width: 80px;
+        margin-top: 70px;
+    }
+</style>

@@ -1,0 +1,181 @@
+﻿@model OnlineShop.ViewModels.ProizvodViewModel
+@{
+    ViewData["Title"] = "AddProizvod";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<div class="not-layout">
+
+    <h2 class="text-center title is-4">Novi proizvod</h2> <br/>
+
+    <form id="product-forma" asp-controller="Proizvod" asp-action="DodajNoviProizvodv2" enctype="multipart/form-data">
+        <div class="form-group">
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="@Model.proizvod.NazivProizvoda"> Naziv proizvoda: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <input name="NazivProizvoda" class="input" id="inp" placeholder="Unesite naziv proizvoda" type="text" asp-for="@Model.proizvod.NazivProizvoda" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.Cijena"> Cijena proizvoda: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <input name="Cijena" id="inpu" class="input" type="number" step="any" value="0" asp-for="proizvod.Cijena" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.Kolicina"> Količina: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <input name="Kolicina" class="input" id="inpa" type="number" value="0" asp-for="proizvod.Kolicina" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.OpisProizvoda"> Detaljan opis: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded">
+                            <textarea class="input" rows="5" cols="5" name="OpisProizvoda" id="inpwide" type="text" placeholder="Unesite opis vašeg proizvoda" asp-for="proizvod.OpisProizvoda" style="height: 200px"></textarea>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.kategorijaId"> Kategorija: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="select">
+                            <select name="kategorijaId" asp-for="proizvod.kategorijaId">
+                                <option disabled selected> Odaberite kategoriju </option>
+                                @foreach (var kategorija in Model.kategorije)
+                                {
+                                    <option value="@kategorija.KategorijaID"> @kategorija.NazivKategorije </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.ProizvodjacId"> Proizvođač: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="select">
+                            <select name="proizvodjacId" asp-for="proizvod.ProizvodjacId">
+                                <option disabled selected> Odaberite proizvođača </option>
+                                @foreach (var proizvodjac in Model.proizvodjaci)
+                                {
+                                    <option value="@proizvodjac.Id"> @proizvodjac.NazivProizvodjaca </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" asp-for="proizvod.uvoznikId"> Uvoznik: </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="select">
+                            <select name="uvoznikId" asp-for="proizvod.uvoznikId">
+                                <option disabled selected> Odaberite uvoznika </option>
+                                @foreach (var uvoznik in Model.uvoznici)
+                                {
+                                    <option value="@uvoznik.UvoznikID"> @uvoznik.NazivUvoznika </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal" style="margin-left: 197px">
+                <div class="file is-info has-name">
+                    <label class="file-label">
+                        <input asp-for="slikaProizvoda" name="slikaProizvoda" accept="image/*" class="file-input" type="file" id="fajl-proizvod">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                Odaberi sliku
+                            </span>
+                        </span>
+                        <span class="file-name" id="file-name">
+                            Slika nije odabrana
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <hr />
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-outline-primary" value="Dodaj proizvod">Dodaj proizvod</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    $("#fajl-proizvod").on("change",
+        function(event) {
+            var input = event.srcElement;
+            $("#file-name").html(this.files[0].name);
+        });
+
+     $("#product-forma").validate({
+         rules: {
+             NazivProizvoda: { required: true },
+             Cijena: { required: true },
+             Kolicina: { required: true },
+             kategorijaId: {required: true},
+             proizvodjacId: {required: true},
+             uvoznikId: {required: true}
+         },
+            messages: {
+                NazivProizvoda: "Polje je obavezno",
+                Cijena: "Polje je obavezno",
+                Kolicina: "Polje je obavezno",
+                kategorijaId: "Polje je obavezno",
+                proizvodjacId: "Polje je obavezno",
+                uvoznikId: "Polje je obavezno"
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
+</script>

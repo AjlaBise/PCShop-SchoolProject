@@ -1,0 +1,499 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Online trgovina </title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/NavbarLayout.css" asp-append-version="true" />
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.css" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.min.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/NavbarLayout.css" asp-append-version="true" />
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.css" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.min.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    </environment>
+
+</head>
+<body>
+
+    <div class="navbar-brand">
+        <a id="btn-burger" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation" style="width:80%; margin-left: 300px; top: 0; position:fixed;">
+        <a id="logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/icons/logo.jpg"></a>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+
+                <a class="navbar-item" asp-area="Administrator" asp-controller="Home" asp-action="Index">
+                    <span><i class="fas fa-user-shield" style="padding-right: 5px"></i></span>
+                    Početna - Admin
+                </a>
+
+                <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span><i class="fas fa-home" style="padding-right: 5px"></i></span>
+                    Početna - Index
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span><i class="fas fa-microchip" style="padding-right: 5px"></i></span>
+                        Proizvodi
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            Kategorija 1
+                        </a>
+                        <a class="navbar-item">
+                            Kategorija 2
+                        </a>
+                        <a class="navbar-item">
+                            Kategorija 3
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Pregledaj sve
+                        </a>
+                    </div>
+                </div>
+
+                <a class="navbar-item">
+                    <span><i class="far fa-address-card" style="padding-right: 5px"></i></span>
+                    Oglasi
+                </a>
+
+                <a asp-area="" asp-controller="Post" asp-action="Index" class="navbar-item">
+                    <span><i class="fas fa-info" style="padding-right: 5px"></i></span>
+                    Postovi
+                </a>
+
+            </div>
+
+
+
+            @if (User.Identity.IsAuthenticated)
+            {
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-danger"
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Logout">
+                                Odjavi se
+                                <i class="fas fa-sign-out-alt" style="padding-left: 5px"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" asp-controller="Account" asp-action="Register">
+                                <strong>Registruj se</strong>
+                            </a>
+                            <a class="button is-light" asp-controller="Account" asp-action="Login">
+                                Loguj se
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </nav>
+    <nav class="admin-sidebar scrolling sidebar-visible" id="sidebar">
+        <aside class="menu">
+            <div class="menu-list">
+                <div class="center center-align">
+                    <img src="~/icons/admin.png" width="80" alt="Admin" style="margin-left: 33%; margin-top:20px; border-radius: 50%;">
+                </div>
+                <br />
+                <p style="text-align: center">
+                    Administrator:
+                    <b id="admin-name"> @User.Identity.Name </b>
+                </p>
+                <hr />
+            </div>
+
+            <p class="menu-label"> Osnovno </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Home" asp-action="Index">
+                        <span> <b><i class="fas fa-home" style="color: #001f3f"></i></b></span>
+                        <span> Početna </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Statistika" asp-action="Index">
+                        <span><i class="fas fa-square-root-alt" style="color: lightseagreen"></i></span>
+                        <span> Statistika </span>
+                    </a>
+                </li>
+            </ul>
+
+            <p class="menu-label"> Upravljanje korisnicima </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Korisnici" asp-action="Index">
+                        <span><i class="fas fa-user-friends" style="color: #0074D9"></i></span>
+                        <span> Lista korisnika </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Narudzbe" asp-action="Index">
+                        <span><i class="fas fa-scroll" style="color: #85144b"></i></span>
+                        <span> Pregled narudžbi </span>
+                    </a>
+                </li>
+            </ul>
+
+            <p class="menu-label"> Proizvodi </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Proizvod" asp-action="Index">
+                        <span><i class="fas fa-list-ul" style="color: #0074D9"></i></span>
+                        <span> Lista proizvoda </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Proizvod" asp-action="AddProizvod">
+                        <span><i class="fas fa-plus" style="color: black"></i></span>
+                        <span> Dodaj novi proizvod </span>
+                    </a>
+                    <ul>
+                        <li>
+                            <div class="dropdown" id="dropdown">
+                                <div class="dropdown-trigger">
+                                    <a class="menu-list" aria-haspopup="true" aria-controls="dropdown-menu3" id="btn">
+                                        <i class="far fa-plus-square" style="color: black"></i>
+                                        <span>Dodaj kategoriju</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                    <div class="dropdown-content flex-content">
+                                        <input id="kategorija-input" type="text" class="input is-success" placeholder="Naziv kategorije" />
+                                        <br />
+                                        <button class="button is-primary" id="kategorija-button"> Snimi </button>
+                                        <small id="result-kategorija">
+
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a asp-controller="Proizvod" asp-action="DodajUvoznika">
+                                <i class="fas fa-truck" style="color: darkcyan"></i>
+                                <span>Dodaj uvoznika</span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown" id="dropdown1">
+                                <div class="dropdown-trigger">
+                                    <a class="menu-list" aria-haspopup="true" aria-controls="dropdown-menu1" id="btn1">
+                                        <i class="far fa-plus-square" style="color: green"></i>
+                                        <span>Dodaj dobavljača</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu1" role="menu">
+                                    <div class="dropdown-content flex-content">
+                                        <input id="naziv-dostave" type="text" class="input is-success" placeholder="Naziv dostave" />
+                                        <input id="adresa-dostave" type="text" class="input is-success" placeholder="Adresa dostave" />
+                                        <input id="kontakt-telefon" type="text" class="input is-success" placeholder="Kontakt telefon" />
+                                        <br />
+                                        <button class="button is-primary" id="kategorija-button1"> Snimi </button>
+                                        <small id="result-kategorija1">
+
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p class="menu-label"> Oglasi </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Oglas" asp-action="Index">
+                        <span><i class="fas fa-ad green-text" style="color: lightslategrey"></i></span>
+                        <span> Svi oglasi </span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a asp-controller="Oglas" asp-action="Index" asp-route-act="true">
+                                <span><i class="fas fa-ad green-text" style="color: green"></i></span>
+                                <span> Aktivni oglasi </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Oglas" asp-action="Index" asp-route-act="false">
+                                <span><i class="fas fa-ad green-text" style="color: darkred"></i></span>
+                                <span> Neaktivni oglasi </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-controller="Oglas" asp-action="Create">
+                                <span><i class="fas fa-plus" style="color: black"></i></span>
+                                <span> Dodaj novi oglas </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p class="menu-label"> Postovi </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Post" asp-action="Index">
+                        <span><i class="fas fa-file-alt" style="color: #0074D9"></i></span>
+                        <span> Pregled postova </span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a asp-controller="Post" asp-action="DodajPost">
+                                <span><i class="fas fa-plus" style="color: black"></i></span>
+                                <span> Objavi novi post </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <p class="menu-label"> Postavke </p>
+            <ul class="menu-list">
+                <li>
+                    <a asp-controller="Settings" asp-action="Index">
+                        <span><i class="fas fa-cog"></i></span>
+                        <span> Postavke </span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label"></p>
+            <ul class="menu-list">
+                <li>
+                    <a>
+                        <span></span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </nav>
+    <div class="toggler" id="toggler">
+        <i class="center center-align left-arrow fas fa-angle-left"></i>
+    </div>
+
+
+
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+<script>
+    if ($(document).width() <= 1000) {
+        $("#sidebar").removeClass("sidebar-visible");
+        $("#sidebar").addClass("sidebar-hidden");
+        $("#toggler>i").css("transform", "rotate(180deg)");
+        $("#toggler").on("click", function (event) {
+            if ($("#sidebar").hasClass("sidebar-visible")) {
+                $("#sidebar").removeClass("sidebar-visible");
+                $("#sidebar").addClass("sidebar-hidden");
+                $("#toggler>i").css("transform", "rotate(180deg)");
+            }
+            else {
+                $("#sidebar").removeClass("sidebar-hidden");
+                $("#sidebar").addClass("sidebar-visible");
+                $("#toggler>i").css("transform", "rotate(0deg)");
+            }
+        });
+    }
+    else {
+        $("#toggler").on("click", function (event) {
+            if ($("#sidebar").hasClass("sidebar-visible")) {
+                $("#sidebar").removeClass("sidebar-visible");
+                $("#sidebar").addClass("sidebar-hidden");
+                $("#toggler>i").css("transform", "rotate(180deg)");
+                $(".not-layout").css("left", "0px");
+                $(".not-layout").css("width", "100%");
+                $(".not-layout-users").css("left", "0px");
+                $(".not-layout-users").css("width", "100%");
+            }
+            else {
+                $("#sidebar").removeClass("sidebar-hidden");
+                $("#sidebar").addClass("sidebar-visible");
+                $("#toggler>i").css("transform", "rotate(0deg)");
+                $(".not-layout").css("left", "250px");
+                $(".not-layout").css("width", "80%");
+                $(".not-layout-users").css("left", "170px");
+                $(".not-layout-users").css("width", "95%");
+            }
+        });
+    }
+</script>
+
+<script>
+    $("#btn").on("click", function () {
+        $("#dropdown").toggleClass("is-active");
+    });
+    $(document).click(function (event) {
+        $target = $(event.target);
+        if (!$target.closest('#dropdown').length &&
+            $('#dropdown').is(":visible")) {
+            $('#dropdown').removeClass("is-active");
+            $("#result-kategorija").text("");
+            $("#kategorija-input").val("");
+        }
+    });
+
+    $("#btn1").on("click", function () {
+        $("#dropdown1").toggleClass("is-active");
+    });
+    $(document).click(function (event) {
+        $target = $(event.target);
+        if (!$target.closest('#dropdown1').length &&
+            $('#dropdown1').is(":visible")) {
+            $('#dropdown1').removeClass("is-active");
+            $("#result-kategorija1").text("");
+            $("#kategorija-input1").val("");
+        }
+    });
+</script>
+
+<script>
+    $("#kategorija-button").on("click",
+        function () {
+            $(this).addClass("is-loading");
+            var x = $("#kategorija-input").val().toString();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Proizvod/DodajKategoriju',
+                data: { "kategorija": x },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response) {
+                        $("#result-kategorija").text("Kategorija '" + x + "' uspješno dodana.");
+                        $("#result-kategorija").css("color", "green");
+                    } else {
+                        $("#result-kategorija").text("Unesite naziv kategorije!");
+                        $("#result-kategorija").css("color", "red");
+                    }
+                    $("#kategorija-button").removeClass("is-loading");
+                }
+            });
+        });
+
+    $("#kategorija-button1").on("click",
+        function () {
+            $(this).addClass("is-loading");
+            var naziv = $("#naziv-dostave").val().toString();
+            var adresa = $("#adresa-dostave").val().toString();
+            var kontakt = $("#kontakt-telefon").val().toString();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Proizvod/DodajDobavljaca',
+                data: { "naziv": naziv, "adresa": adresa, "kontakt": kontakt },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response) {
+                        $("#result-kategorija1").text("Dostavljač '" + naziv + "' uspješno dodan.");
+                        $("#result-kategorija1").css("color", "green");
+                    } else {
+                        $("#result-kategorija1").text("Morate popuniti sva polja!");
+                        $("#result-kategorija1").css("color", "red");
+                    }
+                    $("#kategorija-button1").removeClass("is-loading");
+                }
+            });
+        });
+
+</script>

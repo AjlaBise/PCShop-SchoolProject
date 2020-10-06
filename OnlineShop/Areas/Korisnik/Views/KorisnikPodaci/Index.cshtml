@@ -1,0 +1,252 @@
+﻿@using System.Security.Claims
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<style>
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
+
+<strong style="        font-family: Castellar;
+        margin-left:25%;
+        margin-bottom:20px;
+        font-size: 30px;">PROMJENA KORISNICKIH PODATAKA</strong>
+<div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'Sifra')">Sifra</button>
+    <button class="tablinks" onclick="openCity(event, 'Username')">Korisnicko ime</button>
+    <button class="tablinks" onclick="openCity(event, 'Email')">Email</button>
+</div>
+
+<div id="Sifra" class="tabcontent">
+
+    <div class="icon-box">
+        <b style="font-size:18px;">Sifra</b>
+        <i class="fas fa-key setting-icon"></i>
+    </div>
+    <hr />
+    <div class="forma">
+        <form asp-action="SpasiLozinku" class="register-forma" id="chpw">
+            <input name="userId" id="user-id" type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+
+            <div class="field">
+                <label class="label" style="color: black"> Stara lozinka: </label>
+                <div class="control has-icons-left has-icons-right">
+                    <input type="password" name="staraLozinka" class="input" id="old-password-input" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-key"></i>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label class="label" style="color: black"> Nova lozinka: </label>
+                <div class="control has-icons-left has-icons-right">
+                    <input type="password" name="novaLozinka" class="input" id="new-pasword" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-key"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input id="change-password" type="submit" value="Promijeni lozinku" class="btn btn-info is-inverted is-outlined" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="Username" class="tabcontent">
+    
+    <div class="icon-box">
+        <b style="font-size:18px;">Korisnicko ime</b>
+        <i class="fas fa-signature setting-icon"></i>
+    </div>
+    <hr />
+    <div class="forma">
+        <form asp-action="SpasiUsername" class="register-forma" id="chuname">
+            <input name="userId" id="user-id" type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+            <div class="field">
+                <label class="label" style="color: black"> Novi username: </label>
+                <div class="control has-icons-left">
+                    <input name="noviUsername" class="input is-success" id="username-input" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input id="change-username" type="submit" value="Promijeni username" class="btn btn-info is-outlined is-inverted" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="Email" class="tabcontent">
+    <div class="icon-box">
+        <b style="font-size:18px;">Email</b>
+        <i class="fas fa-signature setting-icon"></i>
+    </div>
+    <hr />
+    <div class="forma">
+        <form asp-action="SpasiEmail" class="register-forma" id="chuname">
+            <input name="userId" id="user-id" type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+            <div class="field">
+                <label class="label" style="color: black"> Novi email: </label>
+                <div class="control has-icons-left">
+                    <input name="noviEmail" class="input is-success" id="username-input" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input id="change-username" type="submit" value="Promijeni email" class="btn btn-info is-outlined is-inverted" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <script>
+
+        $("#chuname").validate({
+            rules: {
+                noviUsername: {
+                    required: true,
+                    minlength: 4
+                }
+            },
+            messages: {
+                noviUsername: {
+                    required: "Polje je obavezno",
+                    minlength: "Najmanje 4 karaktera."
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            },
+            highlight: function (element, errorClass, validClass) {
+                return false;
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                return false;
+            }
+        });
+
+    </script>
+    <script>
+
+        $("#chpw").validate({
+            rules: {
+                staraLozinka: {
+                    required: true,
+                    minlength: 8,
+                    passwordRegex: true
+                },
+                novaLozinka: {
+                    required: true,
+                    minlength: 8,
+                    passwordRegex: true
+                }
+            },
+            messages: {
+                staraLozinka: {
+                    required: "Polje je obavezno",
+                    minlength: "Lozinka mora sadržavati najmanje 8 karaktera.",
+                    passwordRegex: "Mala i velika slova, brojeve i bar jedan specijalni znak."
+                },
+                novaLozinka: {
+                    required: "Polje je obavezno",
+                    minlength: "Lozinka mora sadržavati najmanje 8 karaktera.",
+                    passwordRegex: "Mala i velika slova, brojeve i bar jedan specijalni znak."
+                }
+            },
+            submitHandler: function (form) {
+                form.submit();
+            },
+            highlight: function (element, errorClass, validClass) {
+                return false;
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                return false;
+            }
+        });
+
+        jQuery.validator.addMethod("passwordRegex", function (value, element) {
+            return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()%&{}/]).{8,}$/g.test(value);
+        }, "Lozinka mora sadržavati mala i velika slova, brojeve i bar jedan specijalni znak.");
+
+    </script>
+
+    <script>
+        function openCity(evt, cityName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>

@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<link rel="stylesheet" href="~/css/AdminSettings.css" />
+<script src="https://cdn.tiny.cloud/1/hp7m5by19tqm6brtnalii71vu84aoxh4xf9hg03q3vx74yev/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<div class="not-layout">
+    <h5 class="text is-5 text-center">@TempData["msg"]</h5>
+    @if ((string)TempData["msg"] != "")
+    {
+        <hr />
+    }
+    
+    <div class="admin-setting" id="admin-setting-id">
+        <div class="notification is-primary setting" id="password-load-click">
+            <div class="icon-box">
+                <i class="fas fa-key setting-icon"></i>
+            </div>
+            <hr />
+            <h3 class="title is-3"> Lozinka </h3>
+            <h5 class="text is-5"> Promijenite lozinku </h5>
+
+        </div>
+
+        <div class="notification is-link setting" id="username-load-click">
+            <div class="icon-box">
+                <i class="fas fa-signature setting-icon"></i>
+            </div>
+            <hr />
+            <h3 class="title is-3"> Username</h3>
+            <h5 class="text is-5"> Promijenite korisničko ime </h5>
+
+        </div>
+
+        <div class="notification is-info setting" id="settings-load-click">
+            <div class="icon-box">
+                <i class="fas fa-id-card setting-icon"></i>
+            </div>
+            <hr />
+            <h3 class="title is-3"> Profil </h3>
+            <h5 class="text is-5"> Pregledajte vaš profil </h5>
+            <br/>
+            <progress id="progress" class="progress is-small is-info is-outlined" max="100" style="visibility: hidden"></progress>
+        </div>
+
+        <div class="notification is-success setting" id="email-load-click">
+            <div class="icon-box">
+                <i class="fas fa-envelope-open-text setting-icon"></i>
+            </div>
+            <hr />
+            <h3 class="title is-3"> Email </h3>
+            <h5 class="text is-5"> Kontaktirajte sve korisnike putem E-maila </h5>
+
+        </div>
+    </div>
+    <div id="email-load"></div>
+</div>
+
+
+<script>
+
+    function sleep(miliseconds) {
+        var currentTime = new Date().getTime();
+
+        while (currentTime + miliseconds >= new Date().getTime()) {
+        }
+    }
+
+    $("#username-load-click").one("click",
+        function () {
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Settings/PromijeniUsername',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#username-load-click").html(response);
+                }
+            });
+        });
+
+    $("#password-load-click").one("click",
+        function () {
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Settings/PromijeniLozinku',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#password-load-click").html(response);
+                }
+            });
+        });
+
+    $("#email-load-click").one("click",
+        function () {
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Settings/PosaljiMailSvima',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#email-load").html(response);
+                    window.scrollBy(0,800);
+                }
+            });
+        });
+
+    $("#settings-load-click").one("click",
+        function () {
+            $("#progress").css("visibility", "visible");
+            $.post("/Administrator/Settings/PregledajProfil",
+                function (response) {
+                    $("#email-load-click").css("grid-column", "1 / span 2");
+                    var element = $("#settings-load-click");
+                    element.css("pointer-events", "none");
+                    element.css("grid-column", "1 / span 2");
+                    element.css("grid-row", "2 / span 3");
+                    element.css("background-image", "linear-gradient(to right, #3298dc, #3c9cdd, #46a0dd, #4fa4de, #57a8de)")
+                    element.css("width", "100%");
+                    element.css("height", "500px");
+                    element.html(response);
+                });
+        });
+
+    $(".setting").slice(0, 2).each(function() {
+        $(this).on("click",
+            function() {
+                $(this).css("height", "430px");
+                $(this).css("width", "105%");
+            });
+    });
+
+</script>

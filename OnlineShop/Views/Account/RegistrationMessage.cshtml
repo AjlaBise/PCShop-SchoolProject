@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="spacing"></div>
+
+<p class="text title is-4" style="color: darkgreen">@TempData["sucess"]</p>
+<p class="text is-4" style="color: darkred">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        @ViewBag.ErrorMsg
+    }
+</p>

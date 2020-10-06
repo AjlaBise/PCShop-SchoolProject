@@ -1,0 +1,254 @@
+﻿@model OnlineShop.ViewModels.IndexVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = 0;
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/carousel.css" asp-append-version="true" />
+
+<h4 class="text-info text-center"> @TempData["signout"] </h4>
+
+<!-------------------------------------------------------------------------------------------------->
+
+
+@if (Model.proizvodi != null && Model.proizvodi.Count >= 9)
+{
+    <h4 class="title is-5"> Izdvojeni artikli </h4>
+    <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
+        <div class="carousel-inner" role="listbox" style="background-color: white;">
+
+            @for (int i = 0; i < 3; i++)
+            {
+                if (i == 0)
+                {
+                    <div class="carousel-item active">
+                        <div class="row">
+                            @for (int j = 0; j < 3; j++)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card" style="transform:scale(0.9); margin:auto;">
+                                        <div class="card-image">
+                                            <figure class="image is-4by3" style="transform:scale(0.8)">
+                                                <img class="card-image" src="@Model.proizvodi.ElementAt(count).imageLocation" />
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="media-content">
+                                                <p class="title is-4"> @Model.proizvodi.ElementAt(count).NazivProizvoda </p>
+                                                @if (@Model.proizvodi.ElementAt(count).snizen)
+                                                {
+                                                    <p class="subtitle is-6">
+                                                        Cijena: @Model.proizvodi.ElementAt(count).Cijena KM
+
+                                                        <span class="text-success media-right is-3"> <b> SNIŽENO! </b></span>
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <div class="subtitle is-6">
+                                                        Cijena: @Model.proizvodi.ElementAt(count).Cijena KM
+                                                    </div>
+                                                }
+                                                <div class="content detalji">
+                                                    @Model.proizvodi.ElementAt(count).OpisProizvoda
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <footer class="card-footer">
+                                            <a asp-area="Korisnik" asp-controller="ProizvodDetalji" asp-action="PrikazDetalja" asp-route-id="@Model.proizvodi.ElementAt(count++).ProizvodID" class="button is-link is-rounded is-inverted card-footer-item">Pogledaj detaljno</a>
+                                           
+                                            <a asp-area="Korisnik" asp-controller="Korpa" asp-action="Index" asp-route-proizvodId="@Model.proizvodi.ElementAt(count).ProizvodID" class="button is-link is-rounded card-footer-item" >
+                                                <span class="icon">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </span>
+                                                <span>Naruči</span>
+                                            </a>
+
+                                        </footer>
+
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                  
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        <div class="row">
+                            @for (int j = 0; j < 3; j++)
+                            {
+                                <div class="col-md-4">
+                                    <div class="card" style="transform:scale(0.9); margin:auto;">
+                                        <div class="card-image">
+                                            <figure class="image is-3by2" style="transform:scale(0.8)">
+                                                <img class="card-image" src="@Model.proizvodi.ElementAt(count).imageLocation" />
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="media-content">
+                                                <p class="title is-4"> @Model.proizvodi.ElementAt(count).NazivProizvoda </p>
+                                                @if (@Model.proizvodi.ElementAt(count).snizen)
+                                                {
+                                                    <p class="subtitle is-6">
+                                                        Cijena: @Model.proizvodi.ElementAt(count).Cijena KM
+
+                                                        <span class="text-success media-right is-3"> <b> SNIŽENO! </b> </span>
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <div class="subtitle is-6">
+                                                        Cijena: @Model.proizvodi.ElementAt(count).Cijena KM
+                                                    </div>
+                                                }
+                                                <div class="content detalji">
+                                                    @Model.proizvodi.ElementAt(count).OpisProizvoda
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <footer class="card-footer">
+                                            <a asp-area="Korisnik" asp-controller="ProizvodDetalji" asp-action="PrikazDetalja" asp-route-id="@Model.proizvodi.ElementAt(count++).ProizvodID" class="button is-link is-rounded is-inverted card-footer-item">Pogledaj detaljno</a>
+
+                                            <a href="#" class="button is-link is-rounded card-footer-item">
+                                                <span class="icon">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </span>
+                                                <span>Naruči</span>
+                                            </a>
+
+                                        </footer>
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+
+                    </div>
+
+
+                }
+
+            }
+
+        </div>
+
+    </div>
+
+}
+
+
+
+<br />
+<hr />
+<br />
+
+<h4 class="text text-center title is-4"> Najnoviji postovi </h4>
+@foreach (var x in Model.postovi)
+{
+    <div class="box" style="height: auto">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <img src="@x.ImageLocation" alt="Post-image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p class="">
+                        <strong><a asp-area="" asp-controller="Post" asp-action="Pregled" asp-route-postId="@x.Id" data-toggle="tooltip" data-placement="top" title="Pregledaj">@x.Naslov</a></strong>
+                        <small><span>&#x40</span>@x.Autor.UserName</small>
+                        <small> @x.GetDatumAsText() </small>
+                        <br>
+                    </p>
+                    <p class="short-text">
+                        @x.Sadrzaj
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+}
+
+<br />
+<br />
+<hr />
+
+<!-------------------------------------------------------------------------------------------------->
+
+
+<div class="columns">
+    <div class="column">
+        <div class="info-card">
+            <img src="~/icons/iconfinder_location_1055034.png" width="62" />
+            <div>
+                <a href="/content/17-poslovnice">NAŠE POSLOVNICE</a>
+                <p> Dođite u najbližu poslovnicu ili nas pozovite putem besplatnog broja. <br /> <a href="tel:061550134"> 061/550-134 </a> </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="info-card">
+            <img src="~/icons/catalog_icon.png" width="62" />
+            <div>
+                <a href="">KATALOG</a>
+                <p> Omogućili smo pregled narudžbi i raznih artikala bez potrebe dolaska u poslovnicu u samo par klikova! </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="info-card">
+            <img src="~/icons/iconfinder_Bright_idea_lightbulb_solution_bulb_1886494.png" width="62" />
+            <div>
+                <a href="">SLOŽENA RJEŠENJA</a>
+                <p> Za složena IT rjesenja i bilo kakva pitanja pozovite naš broj ili pošaljite mail na <a href="mailto:prodaja@itoprema.ba">prodaja@itoprema.ba</a> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="lib/jquery/dist/jquery.min.js"></script>
+<script src="lib/jquery/dist/jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('.detalji').each(function (f) {
+            var newstr = $(this).text().substring(0, 140);
+            $(this).text(newstr + "..");
+        });
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $('.short-text').each(function (f) {
+            var newstr = $(this).text().substring(0, 550);
+            $(this).text(newstr + "..");
+        });
+    });
+
+</script>
+
+<script>
+    var n = document.getElementsByClassName("short-text");
+    for (let i = 0; i < n.length; i++) {
+        console.log(n[i].textContent);
+        n[i].innerHTML = n[i].textContent.replace("\"", "");
+    }
+</script>

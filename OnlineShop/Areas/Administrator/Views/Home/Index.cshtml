@@ -1,0 +1,110 @@
+﻿@model OnlineShop.ViewModels.AdminIndexVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/NavbarLayout.css" asp-append-version="true" />
+
+<div class="not-layout">
+    <div class="container" id="admin-container">
+        <h1 class="title is-1" id="admin-title">Dobrodošli, @User.Identity.Name</h1>
+        <h2 class="subtitle"> Ovdje možete uređivati, brisati, dodavati i pretraživati sadržaj na vašoj stranici </h2>
+    </div>
+    <hr />
+
+    <div class="content kontent">
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">@Model.BrojRegistrovanihKorisnika</p>
+                <p class="subtitle">Registrovanih korisnika</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">@Model.BrojAktivnihKorisnika</p>
+                <p class="subtitle">Aktivnih korisnika</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">@Model.BrojProizvoda</p>
+                <p class="subtitle">Objavljenih proizvoda</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">@Model.BrojPotvrdjenihNarudzbi</p>
+                <p class="subtitle">Potvrđenih narudžbi</p>
+            </article>
+        </div>
+    </div>
+
+    <div class="content kontent">
+        <div class="tile is-parent">
+            <article class="tile is-child box black drugired">
+                <p class="title">@Model.ProsjekRecenzija</p>
+                <p class="subtitle">Prosječna ocjena recenzija</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class="tile is-child box black">
+                <p class="title">@Model.BrojPrijavaNaOglas</p>
+                <p class="subtitle">Prijava na oglas</p>
+            </article>
+        </div>
+
+        <div class="tile is-parent">
+            <article class=" tile is-child box black">
+                <p class="title">@Model.BrojObjavljenihPostova</p>
+                <p class="subtitle">Objavljenih postova</p>
+            </article>
+        </div>
+
+    </div>
+
+    <div class="content kontent">
+        <div class="tile is-parent">
+            <a class="tile is-child box trecired" asp-controller="Korisnici" asp-action="Index">
+                <i class="fas fa-users title is-1 text-center" style="opacity: 0.5"></i><br />
+                <p class="subtitle">Upravljanje korisnicima</p>
+            </a>
+        </div>
+
+        <div class="tile is-parent">
+            <a class="tile is-child box trecired" asp-controller="Narudzbe" asp-action="Index">
+                <i class="fas fa-file-invoice title is-1 text-center" style="opacity: 0.5"></i><br />
+                <p class="subtitle">Pregled narudžbi</p>
+            </a>
+        </div>
+
+        <div class="tile is-parent">
+            <a class="tile is-child box trecired" asp-controller="Statistika" asp-action="Index">
+                <i class="fas fa-sort-numeric-up-alt title is-1 text-center" style="opacity: 0.5"></i><br />
+                <p class="subtitle">Statistika i podaci o prodaji</p>
+            </a>
+        </div>
+
+        <div class="tile is-parent">
+            <a class="tile is-child box trecired" asp-controller="Oglas" asp-action="Index">
+                <i class="fas fa-user-md title is-1 text-center" style="opacity: 0.5"></i><br />
+                <p class="subtitle">Upravljanje oglasima</p>
+            </a>
+        </div>
+
+        <div class="tile is-parent">
+            <a class="tile is-child box trecired" asp-controller="Post" asp-action="Index">
+                <i class="fas fa-book-reader title is-1 text-center" style="opacity: 0.5"></i><br />
+                <p class="subtitle">Upravljanje postovima</p>
+            </a>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+</div>

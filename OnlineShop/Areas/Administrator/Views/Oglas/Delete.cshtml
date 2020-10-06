@@ -1,0 +1,75 @@
+﻿@model ClassLibrary.Models.Oglas
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+}
+
+<link rel="stylesheet" href="~/css/OglasLayout.css" asp-append-version="true" />
+<div class="not-layout">
+<div id="start">
+        <h3 class="text-center title is-4">Brisanje oglasa</h3>
+    <h3 class="text-center is-5">Molimo Vas da potvrdite brisanje oglasa.</h3>
+        <div>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Naslov)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Naslov)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Sadrzaj)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Sadrzaj)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BrojPozicija)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.BrojPozicija)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Lokacija)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Lokacija)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DatumObjave)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DatumObjave)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Trajanje)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Trajanje)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DatumIsteka)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DatumIsteka)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Aktivan)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Aktivan)
+                </dd>
+            </dl>
+            <hr/>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Obriši" class="btn btn-danger" /> |
+                <a asp-action="Index">Vrati se nazad</a>
+            </form>
+        </div>
+    </div>
+    </div>

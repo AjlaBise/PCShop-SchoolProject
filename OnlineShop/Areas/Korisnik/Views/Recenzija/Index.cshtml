@@ -1,0 +1,41 @@
+﻿@model OnlineShop.ViewModels.RecenzijeVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<strong style=" font-family: Castellar;
+        margin-left:25%;
+        margin-bottom:20px;
+        font-size: 30px;">
+    Recenzije za proizvoA
+</strong>
+
+<h3 style="text-align:center; font-size:25px; color:Highlight;">Ocjena:  @Model.procjecnaOcjena</h3>
+<table class="table table-striped" style="width:60%; margin-left:20%; margin-top:30px;">
+
+    <thead>
+        <tr>
+        
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var x in Model.rows)
+        {
+            <div id="Komenatr" class="tabcontent">
+                <tr>
+                    <td style="color:Highlight; font-size:18px; ">@x.Komentar</td>
+
+                    <td style="color:Highlight; font-size:18px;">@x.Ocjena</td>
+
+
+
+                </tr>
+            </div>
+        }
+    </tbody>
+</table>
+<a asp-area="Korisnik" asp-controller="Recenzija" asp-action="Dodaj" asp-route-id="@Model.id" class="btn btn-info">Dodaj</a>

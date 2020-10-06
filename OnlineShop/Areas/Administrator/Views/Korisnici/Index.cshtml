@@ -1,0 +1,155 @@
+﻿@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Org.BouncyCastle.Bcpg
+@using ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @addTagHelper *, ReflectionIT.Mvc.Paging
+}
+
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    #loading {
+        display: block;
+        margin: auto;
+        width: 80px;
+        margin-top: 70px;
+    }
+</style>
+
+<div class="not-layout-users">
+    <h4 class="text-center title is-4"> Registrovani korisnici </h4>
+
+    <div class="field">
+        <p class="control has-icons-left">
+            <input id="pretraga" class="input" type="text" placeholder="Pretražite korisnike..">
+            <span class="icon is-small is-left">
+                <i class="fas fa-search"></i>
+            </span>
+        </p>
+    </div>
+    <br />
+
+    <div id="users-partial">
+        <img id="loading" src="~/pictures/Ripple-1s-200px.gif"/>
+    </div>
+
+    <p class="text is-4" style="color: darkgreen; text-align: center" id="email-confirm"></p>
+    <h5 class="text is-5" style="color: darkgreen; text-align: center" id="success"></h5>
+
+    <div id="dialog"></div>
+
+    <br />
+    <br />
+
+
+</div>
+<script>
+
+    $(function () {
+        $.post("/Administrator/Korisnici/GetUsersPartial",
+            {},
+            function (result) {
+                $("#users-partial").html(result);
+                $.post("/Administrator/Korisnici/GetUsersPartial",
+                    { "page": 1, "search": $("#pretraga").val() },
+                    function (result) {
+                        $("#users-partial").empty();
+                        $("#users-partial").html(result);
+                    });
+            });
+
+        $("#pretraga").keyup(function() {
+            $.post("/Administrator/Korisnici/GetUsersPartial",
+                { "page": 1, "search": $("#pretraga").val() },
+                function (result) {
+                    $("#users-partial").empty();
+                    $("#users-partial").html(result);
+                });
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $("#btn1").on("click", function () {
+        $("#dropdown1").toggleClass("is-active");
+    });
+
+    var buttons = $("span[name^='user-'");
+    var dropdowns = $("div[name^='user-'");
+
+    for (let i = 0; i < buttons.length; i++) {
+        $(buttons[i]).on("click", function () {
+            $(dropdowns[i]).toggleClass("is-active");
+        });
+    }
+
+
+    $(document).click(function (event) {
+        $target = $(event.target);
+        for (let i = 0; i < buttons.length; i++) {
+            if (!$target.closest($(dropdowns[i])).length &&
+                $(dropdowns[i]).is(":visible")) {
+                $(dropdowns[i]).removeClass("is-active");
+            }
+        }
+    });
+
+    var confirms = $("button[name^='confirm-'");
+
+    for (let i = 0; i < confirms.length; i++) {
+        $(confirms[i]).on("click", function () {
+            $(this).addClass("is-loading");
+            var id = $(confirms[i]).val();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: '/Administrator/Korisnici/PosaljiToken',
+                data: { "UserID": id },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response != "error") {
+                        $("#email-confirm").text("Uspješno poslan mail korisniku '" + response + "'");
+                        $("#email-confirm").css("color", "darkgreen");
+                    } else {
+                        $("#email-confirm").text("Dogodila se greška, molimo pokušajte ponovo.");
+                        $("#email-confirm").css("color", "red");
+                    }
+                    $(confirms[i]).removeClass("is-loading");
+                }
+            });
+        });
+    }
+
+    var mailButtons = $("button[name^='mailto-'");
+    for (let i = 0; i < mailButtons.length; i++) {
+        $(mailButtons[i]).on("click",
+            function () {
+                var id = $(confirms[i]).val();
+                var username = $(mailButtons[i]).val();
+                $.ajax({
+                    type: "GET",
+                    async: true,
+                    url: '/Administrator/Korisnici/EmailPartial',
+                    data: { "id": id, "user": username },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (response) {
+                        $("#dialog").html(response);
+                    }
+                });
+            });
+    }
+
+
+</script>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+

@@ -1,0 +1,48 @@
+﻿@model ClassLibrary.Models.Proizvod
+@{
+    ViewData["Title"] = "PrikazDetalja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<link rel="stylesheet" href="~/css/DetaljiProizvoda.css" asp-append-version="true" />
+
+
+        <div class="conteiner">
+            <a style="margin-left:93%; margin-top:120px;" title="Nazad" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/icons/back3.png" /></a>
+            <div class="conteiner2">
+                <div class="picture">
+                    <div>
+                        <figure class="image is-3by2">
+                            <img class="card-image" src="@Html.DisplayFor(model=>model.imageLocation)" />
+                        </figure>
+                    </div>
+
+                </div>
+                <div class="table">
+
+                    <table>
+                        <tr>
+                            <td><b>Naziv proizvoda:</b> @Html.DisplayFor(model => model.NazivProizvoda)<br /></td>
+                        </tr>
+                        <tr>
+                            <td><b>Kategorija:</b> @Html.DisplayFor(model => model.kategorija.NazivKategorije)</td>
+                        </tr>
+                        <tr>
+                            <td><b>Proizvođač:</b> @Html.DisplayFor(model => model.Proizvodjac.NazivProizvodjaca)</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cijena:</b> @Html.DisplayFor(model => model.Cijena) KM</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="opis">
+                <tr>
+                    <td><b>Opis proizvoda:</b> @Html.DisplayFor(model => model.OpisProizvoda)<br /></td>
+                </tr>
+            </div>
+        </div>
+ 

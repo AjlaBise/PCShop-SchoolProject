@@ -1,0 +1,49 @@
+﻿.index-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    border: 1px solid lightgray;
+    padding: 15px;
+    border-radius: 20px;
+    height: 400px;
+    padding-top: 40px;
+}
+.index-card>img{
+    align-self:center;
+}
+
+.text-h4 {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 20px;
+}
+
+.index-card>div{
+    margin-top: 25px;
+}
+
+.index-card>.divex{
+    margin: auto;
+}
+
+.text {
+    width: 70%;
+    text-align: center;
+    margin: auto;
+    padding-top: 5px;
+}
+
+.snizen {
+    color: white !important;
+    text-align: center;
+    margin-left: -40%;
+    width: 150%;
+    z-index: 0;
+    transform: rotate(-30deg);
+    background-color: green;
+}
+
+.snizen-opacity {
+    opacity: 0;
+}

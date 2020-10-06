@@ -1,0 +1,130 @@
+﻿@model OnlineShop.ViewModels.UvoznikVM
+@{
+    ViewData["Title"] = "DodajUvoznika";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<div class="not-layout">
+    <h4 class="text-center title is-4"> Uvoznik </h4>
+    <h4 class="text-center text is-5"> Unesite podatke o novom uvozniku </h4>
+    <hr />
+    <br />
+
+    <form asp-action="SnimiUvoznika" class="register-forma" id="form-uvoznik">
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label" asp-for="@Model.uvoznik.NazivUvoznika">Naziv uvoznika</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input asp-for="@Model.uvoznik.NazivUvoznika" class="input" type="text" placeholder="Naziv uvoznika">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label" asp-for="@Model.uvoznik.AdresaUvoznika">Adresa uvoznika</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded">
+                        <input asp-for="@Model.uvoznik.AdresaUvoznika" class="input" type="text" placeholder="Adresa uvoznika">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label"></div>
+            <div class="field-body">
+                <div class="field is-expanded">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <a class="button is-static">
+                                +387
+                            </a>
+                        </p>
+                        <p class="control is-expanded">
+                            <input asp-for="@Model.uvoznik.BrojTelefona" class="input" placeholder="Broj telefona">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label asp-for="@Model.uvoznik.SjedisteId" class="label">Odaberite državu</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select asp-for="@Model.uvoznik.SjedisteId" class="form-control">
+                                @foreach (var x in @Model.sjedista)
+                                {
+                                    <option value="@x.Id"> @x.Naziv </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" value="Submit" class="button is-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script>
+    $(function () {
+        $("#form-uvoznik").validate({
+            rules: {
+                "uvoznik.NazivUvoznika": {
+                    required: true
+                },
+                "uvoznik.AdresaUvoznika": {
+                    required: true
+                },
+                "uvoznik.BrojTelefona": {
+                    required: true
+                }
+            },
+            messages: {
+                "uvoznik.NazivUvoznika": "Molimo unesite naziv uvoznika.",
+                "uvoznik.AdresaUvoznika": "Molimo unesite adresu uvoznika.",
+                "uvoznik.BrojTelefona": "Molimo unesite broj telefona."
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,17 @@
+﻿@model ClassLibrary.Models.Post
+@{
+    ViewData["Title"] = "Pregled";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="text text-center title is-4">@Model.Naslov</h4>
+<div id="post-sadrzaj">
+    @Model.Sadrzaj
+</div>
+<hr />
+<a asp-area="" asp-controller="Post" asp-action="Index" class="button is-primary"> Postovi </a>
+
+<script>
+    var sadrzaj = document.getElementById("post-sadrzaj");
+    sadrzaj.innerHTML = sadrzaj.textContent.replace("\"", "");
+</script>

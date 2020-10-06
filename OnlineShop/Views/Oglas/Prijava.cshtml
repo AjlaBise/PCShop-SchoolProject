@@ -1,0 +1,76 @@
+﻿@model ClassLibrary.Models.Oglas
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="container" style="        width: 70%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <br />
+        <br />
+        <p style="text-align: center; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-size: 35px; ">PRIJAVA NA OGLAS </p>
+        <br />
+        <input asp-for="Id" hidden />
+        <div class="tab-pane">
+            <form role="form">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Ime</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Prezime</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Email</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="email">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label">Adresa</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="text" value="" placeholder="Ulica">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label"></label>
+                    <div class="col-lg-6">
+                        <input class="form-control" type="text" value="" placeholder="Grad">
+                    </div>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="text" value="" placeholder="Država">
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label" for="file">CV</label>
+                    <div class="col-lg-9">
+                        <input type="file" id="file" name="file" multiple>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label form-control-label"></label>
+                    <div class="col-lg-9">
+                        <a type="reset" class="btn btn-secondary" asp-area="" asp-controller="Home" asp-action="Index">Odustani</a>
+                        <input type="button" class="btn btn-primary" value="Pošalji">
+                    </div>
+                </div>
+                <br />
+                <br />
+            </form>
+        </div>
+    </div>
+
+</form>
+

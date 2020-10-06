@@ -1,0 +1,91 @@
+﻿@model OnlineShop.ViewModels.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<h4 class="title is-4"> Unesite vaše podatke </h4>
+<hr />
+
+<div class="row">
+    <div class="forma">
+        <form asp-action="Authorize" asp-route-returnurl="@Model.ReturnUrl" class="register-forma" id="login-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="field">
+                <label asp-for="Username" class="label"> Vaš username: </label>
+                <div class="control has-icons-left">
+                    <input asp-for="Username" class="input is-success" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <label asp-for="Password" class="label"> Vaša lozinka</label>
+                <div class="control has-icons-left">
+                    <input asp-for="Password" class="input" type="password" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> Zapamti me
+                </label>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="">
+                    <a asp-action="ForgotPassword"> Zaboravio/la sam lozinku </a>
+                </label>
+            </div>
+
+
+            <p class="text is-4" style="color: darkgreen">
+                @if (ViewBag.EmailConfirmated != null)
+                {
+                    @ViewBag.EmailConfirmated
+                }
+
+            </p>
+            <br />
+
+            <div class="field">
+                <div class="control">
+                    <input type="submit" value="Loguj se" class="button is-success" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    $("#login-form").validate({
+        rules: {
+            Username: {
+                required: true
+            },
+            Password: {
+                required: true
+            }
+        },
+        messages: {
+            Username: "Polje je obavezno",
+            Password: "Polje je obavezno"
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+
+</script>

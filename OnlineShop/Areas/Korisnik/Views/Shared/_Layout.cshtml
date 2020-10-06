@@ -1,0 +1,219 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Online trgovina </title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.css" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.min.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css" />
+        <link href="https://fonts.googleapis.com/css?family=Didact+Gothic&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/AccountStyles.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.css" />
+        <link rel="stylesheet" href="~/bulma-0.8.0/css/bulma.min.css" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    </environment>
+
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation" style="width:100%">
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" id="navbar-burger-id" data-target="navbar-menu-id">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div id="navbar-menu-id" class="navbar-menu" style="width:100%">
+            <div class="navbar-start">
+                @if (User.IsInRole("Administrator"))
+                {
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <button class="button is-light" onclick="location.href = '@Url.Action(action: "FillDatabase", controller: "Home")'"> Popuni bazu </button>
+                            <button class="button is-light" onclick="location.href = '@Url.Action(action: "EmptyDatabase", controller: "Home")'"> Očisti bazu </button>
+                        </div>
+                    </div>
+                }
+                <a asp-controller="" asp-action=""><img src="~/icons/logo.jpg"></a>
+                <a class="navbar-item" asp-area="" asp-controller="" asp-action="">
+                    Početna
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable" id="proizvodi">
+                    <a class="navbar-link">
+                        Proizvodi
+                    </a>
+                    <div class="navbar-dropdown" id="proizvodlist" style="overflow-y:scroll; height:250px;">
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Računari" class="navbar-item">
+                            Računari
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Laptopi" class="navbar-item">
+                            Laptopi
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Matične ploče" class="navbar-item">
+                            Matične ploče
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Monitori" class="navbar-item">
+                            Monitori
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Periferija" class="navbar-item">
+                            Periferija
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Procesori" class="navbar-item">
+                            Procesori
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Grafičke kartice" class="navbar-item">
+                            Grafičke kartice
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Hladnjaci" class="navbar-item">
+                            Hladnjaci
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Mobilni uređaji" class="navbar-item">
+                            Mobilni uređaji
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Tastature" class="navbar-item">
+                            Tastature
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Kućište" class="navbar-item">
+                            Kućište
+                        </a>
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledProizvoda" asp-route-naziv="Slušalice" class="navbar-item">
+                            Slušalice
+                        </a>
+                        <hr class="navbar-divider">
+
+                        <a asp-area="" asp-controller="Proizvodi" asp-action="PregledSvih" class="navbar-item">
+                            Pregledaj sve
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <a asp-area="" asp-controller="Oglas" asp-action="Prikazi" class="navbar-item">
+                    Oglasi
+
+                </a>
+
+
+
+                <a asp-area="" asp-controller="Post" asp-action="Index" class="navbar-item">
+                    Svi postovi
+                </a>
+
+            </div>
+
+
+            </div>
+
+
+        </nav>
+
+    <hr />
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2020 </p>
+        </footer>
+    </div>
+
+    <partial name="_CookieConsentPartial" />
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"></script>*@
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+<script>
+
+    $('#navbar-burger-id').click(function () {
+        if($('#navbar-burger-id').hasClass('is-active')){
+            $('#navbar-burger-id').removeClass('is-active');
+            $('#navbar-menu-id').removeClass('is-active');
+        }else {
+            $('#navbar-burger-id').addClass('is-active');
+            $('#navbar-menu-id').addClass('is-active');
+        }
+    });
+
+</script>

@@ -1,0 +1,92 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<br />
+<br />
+<div class="field is-vertical">
+    <div class="field-label is-normal">
+        <label class="label" style="text-align: left"> Naslov maila </label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <p class="control is-expanded">
+                <input id="naslov-poruke" name="Naslov" class="input" type="text" placeholder="Unesite naslov poruke">
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="field is-vertical">
+    @*  Naslov  *@
+    <div class="field-label is-normal">
+        <label class="label" style="text-align: left"> Sadržaj </label>
+    </div>
+
+    @*  Sadrzaj  *@
+    <div class="field-body">
+        <div class="field">
+            <p class="control is-expanded">
+                <textarea id="editor-mail">  </textarea>
+            </p>
+        </div>
+    </div>
+    <br />
+    @*  Submit  *@
+    <div class="field is-vertical">
+        <div class="field-label">
+
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input id="send-mail-all" type="submit" value="Pošalji mail korisnicima" class="button is-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<script>
+    tinymce.init({
+        selector: '#editor-mail',
+        plugins: 'a11ychecker advcode casechange formatpainter linkchecker lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+        toolbar_drawer: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name'
+    });
+
+    $("#send-mail-all").on("click",
+        function () {
+            $("#send-mail-all").addClass("is-loading");
+            $("#send-mail-all").val("Molimo sačekajte..");
+
+            var text = tinymce.get("editor-mail").getContent();
+            var naslov = $("#naslov-poruke").val();
+
+            $.post('/Administrator/Korisnici/PosaljiMail',
+                { "userID": "All", "text": text, "title": naslov },
+                function() {
+                    $("#send-mail-all").removeClass("is-loading");
+                    $("#send-mail-all").val("Uspješno poslano");
+                    $("#send-mail-all").removeClass("is-primary");
+                    $("#send-mail-all").addClass("is-success");
+                });
+        });
+
+</script>

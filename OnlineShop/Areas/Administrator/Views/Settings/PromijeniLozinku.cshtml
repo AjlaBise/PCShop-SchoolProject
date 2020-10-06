@@ -1,0 +1,90 @@
+﻿@using System.Security.Claims
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<div class="icon-box">
+    <i class="fas fa-key setting-icon"></i>
+</div>
+<hr />
+<div class="forma">
+    <form asp-action="SpasiLozinku" class="register-forma" id="chpw">
+        <input name="userId" id="user-id" type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+
+        <div class="field">
+            <label class="label" style="color: white"> Stara lozinka: </label>
+            <div class="control has-icons-left has-icons-right">
+                <input type="password" name="staraLozinka" class="input" id="old-password-input" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="field">
+            <label class="label" style="color: white"> Nova lozinka: </label>
+            <div class="control has-icons-left has-icons-right">
+                <input type="password" name="novaLozinka" class="input" id="new-pasword" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-key"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input id="change-password" type="submit" value="Promijeni lozinku" class="button is-primary is-inverted is-outlined" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    $("#chpw").validate({
+        rules: {
+            staraLozinka: {
+                required: true,
+                minlength: 8,
+                passwordRegex: true
+            },
+            novaLozinka: {
+                required: true,
+                minlength: 8,
+                passwordRegex: true
+            }
+        },
+        messages: {
+            staraLozinka: {
+                required: "Polje je obavezno",
+                minlength: "Lozinka mora sadržavati najmanje 8 karaktera.",
+                passwordRegex: "Mala i velika slova, brojeve i bar jedan specijalni znak."
+            },
+            novaLozinka: {
+                required: "Polje je obavezno",
+                minlength: "Lozinka mora sadržavati najmanje 8 karaktera.",
+                passwordRegex: "Mala i velika slova, brojeve i bar jedan specijalni znak."
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+        highlight: function (element, errorClass, validClass) {
+            return false;
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            return false;
+        }
+    });
+
+    jQuery.validator.addMethod("passwordRegex", function (value, element) {
+        return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()%&{}/]).{8,}$/g.test(value);
+    }, "Lozinka mora sadržavati mala i velika slova, brojeve i bar jedan specijalni znak.");
+
+</script>

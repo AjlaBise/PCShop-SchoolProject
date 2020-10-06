@@ -1,0 +1,38 @@
+﻿.narudzba {
+    border-top: 2px solid whitesmoke;
+    margin-top: 10px;
+    padding: 50px;
+}
+
+.subtitle {
+    height: 13px;
+}
+
+.detalji {
+    margin-top: -15px;
+    padding-bottom: 10px;
+}
+
+.tabela {
+    margin-top: 15px;
+}
+
+.content-right {
+    position: absolute;
+    width: 100%;
+    right: 25px;
+    margin-right: 25px;
+    text-align: right;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.kontakt {
+    position: relative;
+    width: 100%;
+    
+}

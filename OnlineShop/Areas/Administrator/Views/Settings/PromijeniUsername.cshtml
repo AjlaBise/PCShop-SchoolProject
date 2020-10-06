@@ -1,0 +1,62 @@
+﻿@using System.Security.Claims
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<div class="icon-box">
+    <i class="fas fa-signature setting-icon"></i>
+</div>
+<hr />
+<div class="forma">
+    <form asp-action="SpasiUsername" class="register-forma" id="chuname">
+        <input name="userId" id="user-id" type="hidden" value="@this.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+        <div class="field">
+            <label class="label" style="color: white"> Novi username: </label>
+            <div class="control has-icons-left">
+                <input name="noviUsername" class="input is-success" id="username-input" />
+                <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input id="change-username" type="submit" value="Promijeni username" class="button is-info is-outlined is-inverted" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    $("#chuname").validate({
+        rules: {
+            noviUsername: {
+                required: true,
+                minlength: 4
+            }
+        },
+        messages: {
+            noviUsername: {
+                required: "Polje je obavezno",
+                minlength: "Najmanje 4 karaktera."
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+        },
+        highlight: function (element, errorClass, validClass) {
+            return false;
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            return false;
+        }
+    });
+
+</script>

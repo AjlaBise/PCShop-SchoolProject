@@ -1,0 +1,77 @@
+﻿@model List<ClassLibrary.Models.Proizvod>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="~/css/PregledProizvoda.css" asp-append-version="true" />
+
+<form asp-controller="Proizvodi" asp-action="Index">
+    <p>
+        <input type="text" name="searchTXT" placeholder="Pretraga proizvoda po nazivu" style="width:90%; height:40px; border-radius:5px; border:3px solid #e9eef0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <input type="submit" value="Traži" style="border-radius: 5px; border: 4px solid #e9eef0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    " />
+    </p>
+</form>
+<div class="glavni">
+
+    <div class="desni">
+
+        @foreach (var x in Model)
+        {
+            <div class="boxovi">
+
+                <div class="slika">
+                    <img src="@x.imageLocation" />
+                </div>
+                <div class="donji">
+                    <table>
+
+                        <tr>
+                            <td style="font-weight: 700; " id="myUL">@x.NazivProizvoda</td>
+                        <tr>
+                        <tr>
+                            <td style="font-weight:500;">@x.Cijena KM</td>
+                        <tr />
+                        <tr>
+                            <td style="font-weight: 500;">@x.kategorija.NazivKategorije</td>
+                        <tr />
+                        <tr>
+                            <td style="font-weight:600; color: #058ee6;"><b>Na stanju: @x.Kolicina</b></td>
+
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-left:50%;">
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Recenzija" style="margin-left:20%;" asp-area="Korisnik" asp-controller="Recenzija" asp-action="PregledRecenzije" asp-route-id="@x.ProizvodID"><img src="~/icons/review1.png" /></a></strong>
+                    }
+                    else
+
+                    {
+                        <strong><a title="Recenzija" style="margin-left:20%;" asp-area="" asp-controller="Account" asp-action="Login" asp-route-id=""><img src="~/icons/review1.png" /></a></strong>
+                    }
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Korpa" asp-area="" asp-controller="" asp-action=""><img src="~/icons/basket.png" /></a></strong>
+                    }
+                    else
+                    {
+                        <strong><a title="Korpa" asp-area="" asp-controller="Account" asp-action="Login"><img src="~/icons/basket.png" /></a></strong>
+                    }
+                    @if (User.IsInRole("Korisnik"))
+                    {
+                        <strong><a title="Detalji" asp-area="Korisnik" asp-controller="ProizvodDetalji" asp-action="PrikazDetalja" asp-route-id="@x.ProizvodID"><img src="~/icons/information.png" /></a></strong>
+                    }
+                    else
+                    {
+                        <strong><a title="Detalji" asp-area="" asp-controller="Account" asp-action="Login"><img src="~/icons/information.png" /></a></strong>
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
